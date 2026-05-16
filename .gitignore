@@ -4,5 +4,8 @@
 # Log directory
 logs
 
+# Data directory
+data
+
 # Python cache
 *__pycache__
