@@ -14,14 +14,3 @@ def bot_events(bot : commands.Bot):
     @bot.event
     async def on_ready():
         print(f"We are ready to go in, {bot.user.name}")
-        
-    @bot.event
-    async def on_message(message):
-        if message.author == bot.user:
-            return
-        
-        if "shit" in message.content.lower():
-            await message.delete()
-            await message.channel.send(f"{message.author.mention} don't use that word!")
-            
-        await bot.process_commands(message)
