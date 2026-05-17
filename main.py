@@ -9,6 +9,7 @@ import datetime
 from src.logger import logger_module
 from src.events import events_module
 from src.commands import commands_module
+from src.database import database_module
 
 SCRIPT_PATH = os.path.dirname(__file__)
 CURRENT_DATE = datetime.date.today().strftime("%Y-%m-%d")
@@ -27,16 +28,21 @@ def startup_bot():
     log_filename = f"discord_{CURRENT_DATE}.log"
     handler = logger_module.create_logger(path_logfile=log_directory, name_logfile=log_filename, mode='a')
     
+    # Build or instantiate database using pickledb
+    database_directory = os.path.join(SCRIPT_PATH, "data")
+    database_name = "discord_archie_data.json"
+    database = database_module.create_database(path_database=database_directory, name_database=database_name)
+    
     # Setup intents akin to discord dev API page
     intents = discord.Intents.default()
     intents.message_content = True
     intents.members = True
     
     # Setup bot with respective events and commands
-    bot = commands.Bot(command_prefix='/', intents=intents)
+    bot = commands.Bot(command_prefix='!', intents=intents)
     
     events_module.bot_events(bot)
-    commands_module.bot_commands(bot)
+    commands_module.bot_commands(bot, database)
     
     bot.run(token, log_handler=handler, log_level=logging.DEBUG)
 
