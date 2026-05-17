@@ -1,0 +1,442 @@
+{
+    "chateauDeBelladone": {
+        "name": "Belladone",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonDesChamps": {
+        "name": "Tournesol Affamé",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonEnsable": {
+        "name": "Mob l'Éponge",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonScarafeuilles": {
+        "name": "Scarabosse Doré",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonTofus": {
+        "name": "Batofu",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "maisonFantome": {
+        "name": "Boostache",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonSquelettes": {
+        "name": "Chafer Rônin",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonBouftous": {
+        "name": "Bouftou Royal",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonBworks": {
+        "name": "Bworkette",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonForgerons": {
+        "name": "Coffre des Forgerons",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonLarves": {
+        "name": "Shin Larve",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "grotteHesque": {
+        "name": "Corailleur Magistral",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "nidKwakwa": {
+        "name": "Kwakwa",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "chateauWaWabbit": {
+        "name": "Wa Wabbit",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "kanniboul": {
+        "name": "Kanniboul Ebil",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "blopsCoco": {
+        "name": "Blop Coco Royal",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "blopsGriotte": {
+        "name": "Blop Griotte Royal",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "blopsIndigo": {
+        "name": "Blop Indigo Royal",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "blopsReinette": {
+        "name": "Blop Reinette Royal",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "gelaxiemeDimension": {
+        "name": "Gelées Royales",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "laboratoireBrumen": {
+        "name": "Nelween",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "archeOtomai": {
+        "name": "Gourlo le Terrible",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonCraqueleurs": {
+        "name": "Craqueleur Légendaire",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "terrierDuWaWabbit": {
+        "name": "Wa Wobot",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "donjonAbraknydes": {
+        "name": "Abraknyde Ancestral",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "barrageDureTete": {
+        "name": "Colonimb Selim Quartz",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "antreDragonCochon": {
+        "name": "Dragon Cochon",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "caverneKoulosse": {
+        "name": "Koulosse",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "donjonMoon": {
+        "name": "Moon",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "donjonCanides": {
+        "name": "Meulou",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "gouletRasboul": {
+        "name": "Silf le Rasboul Majeur",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "bibliothequeMaitreCorbac": {
+        "name": "Maître Corbac",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "donjonRatsBonta": {
+        "name": "Rat Blanc",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "donjonRatsBrakmar": {
+        "name": "Rat Noir",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "antreBlopMulticolore": {
+        "name": "Blop Multicolore Royal",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "donjonMinotoror": {
+        "name": "Minotoror",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "serreRoyalmouth": {
+        "name": "Royalmouth",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "tofulaillerRoyal": {
+        "name": "Tofu royal",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "sanctuaireDragoeufs": {
+        "name": "Crocabulia",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "repaireSkeunk": {
+        "name": "Skeunk",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "sanctuaireMineroc": {
+        "name": "Gardien Crakillian",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "repaireKanigroula": {
+        "name": "Kanigroula",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "donjonCheneMou": {
+        "name": "Chêne Mou",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "laboratoireTynril": {
+        "name": "Tynril",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "excavationMansotRoyal": {
+        "name": "Mansot Royal",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "tertreLongSommeil": {
+        "name": "Hell Mina",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "epaveGrolandaisViolent": {
+        "name": "Ben le Ripate",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "donjonRatsChateauAmakna": {
+        "name": "Sphincter Cell",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "canopeeKimbo": {
+        "name": "Kimbo",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "salleMinotot": {
+        "name": "Minotot",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "hypogeeObsidiantre": {
+        "name": "Obsidiantre",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "chapelleInondee": {
+        "name": "Zombrute",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "cavernesGivrefoux": {
+        "name": "Tengu Givrefoux",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "valleeDameDesEaux": {
+        "name": "Nagate la Dame des eaux",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "pyramideRoiSkaille": {
+        "name": "Roi Skaille",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "antreKorriandre": {
+        "name": "Korriandre",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "antreKralamoureGeant": {
+        "name": "Kralamoure Géant",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "donjonBworker": {
+        "name": "Bworker",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "donjonFungus": {
+        "name": "Ougah",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "atelierTanukouiSan": {
+        "name": "Tanukouï San",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "cavernesKolosso": {
+        "name": "Kolosso",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "fabriqueFouxArtifice": {
+        "name": "Founoroshi",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "cavernesNourricieres": {
+        "name": "Fuji Givrefoux",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "mineSakai": {
+        "name": "Grolloum",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "antichambreGloursons": {
+        "name": "Glourséleste",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "dojoDuVent": {
+        "name": "Hanshi et Shihan",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "forgefroideMissizFrizz": {
+        "name": "Missiz Frizz",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "transporteurSylargh": {
+        "name": "Sylargh",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "salonsPrivesKlime": {
+        "name": "Klime",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "laboratoireNileza": {
+        "name": "Nileza",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "comteHarebourg": {
+        "name": "Comte Harebourg",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "bambusaieDamadrya": {
+        "name": "Damadrya",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "sanctuaireAmesEgarees": {
+        "name": "Katamashi",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "coeurElementaireDePandala": {
+        "name": "Coeur Élémentaire",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "donjonNowel": {
+        "name": "Sapik",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "caverneNowel": {
+        "name": "Papa Nowel",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "maisonPapaNowel": {
+        "name": "Père Fwetar",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "donjonVulkaniaSomnambule": {
+        "name": "Grozilla et Grasmera Somnambules",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "donjonVulkaniaEpuise": {
+        "name": "Grozilla et Grasmera Epuisés",
+        "tag": "medium",
+        "category": "dungeon"
+    },
+    "donjonVulkaniaFatigue": {
+        "name": "Grozilla et Grasmera Fatigués",
+        "tag": "hard",
+        "category": "dungeon"
+    },
+    "donjonVulkania": {
+        "name": "Grozilla et Grasmera",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "potagerHalouine": {
+        "name": "Halouine",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "criqueRocOstique": {
+        "name": "Os Andeuk'Hou",
+        "tag": "easy",
+        "category": "dungeon"
+    },
+    "gouldenPalace": {
+        "name": "Délégoule du Personnel",
+        "tag": "very_hard",
+        "category": "dungeon"
+    },
+    "combatGroupe3" : {
+        "name" : "Faire 3 combats en groupe",
+        "tag" : "group",
+        "category": "battle"
+    },
+    "combatGroupe5" : {
+        "name" : "Faire 5 combats en groupe",
+        "tag" : "group",
+        "category": "battle"
+    },
+    "ascension1" : {
+        "name" : "Faire 1 palier d'ascension",
+        "tag" : "group",
+        "category": "ascension"
+    },
+    "ascension3" : {
+        "name" : "Faire 3 paliers d'ascension",
+        "tag" : "group",
+        "category": "ascension"
+    }
+}
