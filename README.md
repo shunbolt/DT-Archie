@@ -48,5 +48,5 @@ Discord ID : Shunbolt#1312
 
 This project is under the MIT LICENSE
 
-More on [the LICENSE file](LICENSE)
+More on the [LICENSE](LICENSE) file
 
