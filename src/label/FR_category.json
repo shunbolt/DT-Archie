@@ -1,5 +1,14 @@
 {
-    "dungeon" : "Donjon",
-    "battle" : "Combat",
-    "ascension" : "Ascension"
+    "dungeon" : {
+        "name": "Donjon" ,
+        "discord_emoji" : ":crossed_swords:"
+    },
+    "battle" : {
+        "name": "Combat de groupe" ,
+        "discord_emoji" : ":people_holding_hands:" 
+    },
+    "ascension" : {
+        "name": "Ascension" ,
+        "discord_emoji" :":person_climbing:" 
+    }
 }
