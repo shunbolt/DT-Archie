@@ -1,0 +1,22 @@
+{
+    "easy" : {
+        "name": "Novice" ,
+        "discord_emoji" : ":green_book:"
+    },
+    "medium" : {
+        "name": "Intermédiaire" ,
+        "discord_emoji" : ":orange_book:" 
+    },
+    "hard" : {
+        "name": "Avancé" ,
+        "discord_emoji" :":closed_book:" 
+    },
+    "very_hard" : {
+        "name": "Difficile" ,
+        "discord_emoji" :":skull:" 
+    },
+    "group" : {
+        "name": "Groupe" ,
+        "discord_emoji" :":handshake:" 
+    }
+}
