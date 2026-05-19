@@ -16,10 +16,10 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
         database (PickleDB): PickleDB database for storing and querying data 
     """
     
-    # Archie command 
+    # Archie commands 
     # Command to insert a quest to the database
-    @bot.command()
-    async def ajout_quete(ctx : commands.Context, quest_label = None, quest_comments = ""):
+    @bot.command(aliases=["ajout", "add"], help="Ajoute une quête à ton nom")
+    async def ajout_quete(ctx : commands.Context, quest_label = None, *, quest_comments = ""):
         """Command to add a quest to the billboard
 
         Args:
@@ -89,7 +89,7 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
                 await ctx.send(f"""Aucune quête n'a été trouvée avec le libellé : {quest_label}""")
     
     # Command to get all quests from the current user
-    @bot.command()
+    @bot.command(aliases=["lire", "read"], help="Affiches l'ensemble de tes quêtes sous forme d'indices")
     async def lire_quetes(ctx : commands.Context): 
         """Function to read quests from the user on the quest billboard
 
@@ -129,7 +129,7 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
         await ctx.reply(embed=embed)
         
     # Command to remove a quest from the user list (passing an index)
-    @bot.command()
+    @bot.command(aliases=["del", "supp"], help="Supprimes la quête indexé en argument de ta liste de quête")
     async def supp_quete(ctx : commands.Context, arg: int):
         """Function to remove a quest given it's displayed index (offset by 1)
 
@@ -159,5 +159,17 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
         else:
             await ctx.send("Numéro d'index inconnu on non reconnu : veuillez réessayer")
         
+    # Command to remove a quest from the user list (passing an index)
+    bot.remove_command("help")
+    
+    @bot.command(aliases=["help"])
+    async def aide(ctx : commands.Context):
+        """Function to display the help text
+
+        Args:
+            ctx (commands.Context): discord context of the command
+        """
+        
+        await ctx.send(label_module.read_help())
 
         
