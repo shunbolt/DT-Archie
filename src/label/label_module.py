@@ -6,6 +6,7 @@ SCRIPT_PATH = os.path.dirname(__file__)
 PATH_TO_LABEL_FR = os.path.join(SCRIPT_PATH, "FR_label.json")
 PATH_TO_CATEGORY_FR = os.path.join(SCRIPT_PATH, "FR_category.json") 
 PATH_TO_TAG_FR = os.path.join(SCRIPT_PATH, "FR_tag.json") 
+PATH_TO_HELP_FR = os.path.join(SCRIPT_PATH, "FR_help.txt")
 
 def read_full_label(lang = "FR") -> list:
     """Read the entire label file
@@ -64,3 +65,18 @@ def read_tag(tag : str, lang = "FR") -> dict:
         tag_data = json.load(file)
         
     return tag_data.get(tag)
+
+def read_help(lang ="FR") -> str:
+    """Read the content of the help file
+
+    Args:
+        lang (str, optional): Language to use. Defaults to "FR".
+
+    Returns:
+        str: Help content
+    """
+    
+    with open(PATH_TO_HELP_FR, 'r', encoding='utf-8') as file:
+        help_content = file.read()
+        
+    return help_content
