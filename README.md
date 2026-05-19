@@ -15,7 +15,9 @@ The bot has been developped in Python and specifically the discord.py library
 
 ## Install
 
-To install the bot, use the following instructions :
+The bot can be installed in a server using the discord install link below :
+
+[Link to the Archie bot install](https://discord.com/oauth2/authorize?client_id=1504830582415429723)
 
 ## Usage
 
@@ -38,6 +40,7 @@ Note : The `!ajout_quete` command will be simplified to only requiring label and
 ## Authors
 
 Made by Shunbolt 
+
 Discord ID : Shunbolt#1312
 
 ## Thanks
@@ -46,7 +49,7 @@ Discord ID : Shunbolt#1312
 
 ## License
 
-This project is under the MIT LICENSE
+This project is under the GPL-3.0 LICENSE
 
 More on the [LICENSE](LICENSE) file
 
