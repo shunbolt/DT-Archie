@@ -13,6 +13,15 @@ The bot has been developped in Python and specifically with the discord.py libra
 ## Table of contents
 
 - [DT-Archie](#dt-archie)
+  - [Table of contents](#table-of-contents)
+  - [Install](#install)
+  - [Usage](#usage)
+  - [Authors](#authors)
+  - [Data usage](#data-usage)
+  - [Thanks](#thanks)
+  - [Contributing](#contributing)
+  - [License](#license)
+
 
 ## Install
 
