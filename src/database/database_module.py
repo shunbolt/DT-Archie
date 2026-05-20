@@ -65,8 +65,6 @@ async def get_quests_from_server(database : PickleDB,
             for key in users_from_server_keys if await database.get(key, default=[])
         } 
     
-    print(dict_server_quests)
-    
     return dict_server_quests
     
 
