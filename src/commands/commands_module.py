@@ -88,6 +88,37 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
             else:
                 await ctx.send(f"""Aucune quête n'a été trouvée avec le libellé : {quest_label}""")
     
+    def embed_quest_list_from_member(member : discord.member, list_quests : list) -> discord.Embed:
+        """Subfunction to build the embed message of the list of quests from a member
+
+        Args:
+            member (discord.member): Discord memeber to display quests from
+            list_quests (list): List of it's quests from the data
+        """
+        # Build embed with the quests information
+        embed = discord.Embed(title=f"Quêtes de {member.name} sur le comptoir de quêtes de la guilde :")
+        embed.set_thumbnail(url=member.avatar.url)
+        
+        for index, quest in enumerate(list_quests):
+            quest_index = index + 1
+            
+            quest_category = label_module.read_category(quest["quest_category"])
+            quest_category_name = quest_category["name"]
+            quest_category_emoji = quest_category["discord_emoji"]
+            quest_label = label_module.read_label(quest["quest_label"])["name"]
+            quest_comments = quest["quest_comments"]
+            
+            # Add emoji based on difficulty tag : implement on a dict directly
+            quest_tag = label_module.read_label(quest["quest_label"])["tag"]
+            quest_tag_name = label_module.read_tag(quest_tag)["name"]
+            quest_tag_emoji = label_module.read_tag(quest_tag)["discord_emoji"]            
+            
+            embed.add_field(name=f"{quest_category_emoji} Quête {quest_category_name} {quest_tag_name} #{quest_index}",
+                            value=f""":label: Nom : {quest_label} {quest_tag_emoji}\n:pencil: Commentaires : {quest_comments}""",
+                            inline=False)
+        
+        return embed
+    
     # Command to get all quests from the current user
     @bot.command(aliases=["lire", "read"], help="Affiches l'ensemble de tes quêtes sous forme d'indices")
     async def lire_quetes(ctx : commands.Context): 
@@ -104,29 +135,46 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
                                                    server_id=server_id,
                                                    user_id=user_id)
         
-        # Build embed with the quests information
-        embed = discord.Embed(title=f"Quêtes de {ctx.author.name} sur le comptoir de quêtes de la guilde :")
-        embed.set_thumbnail(url=ctx.author.avatar.url)
+        if list_quests: 
+            embed = embed_quest_list_from_member(member=ctx.author, list_quests=list_quests)
+                
+            await ctx.reply(embed=embed)
+        else:
+            await ctx.reply("Il n'y a aucune quête à ton nom sur le comptoir : utilise `!ajout_quete` pour en ajouter une !")
+    
+    # Command to get all quests from the current server
+    @bot.command(aliases=["lire_tout", "read_all"], help="Affiches l'ensemble des quêtes de tous les membres du serveur")
+    async def lire_toutes_quetes(ctx : commands.Context): 
+        """Function to read all quests from the server
+
+        Args:
+            ctx (discord.Context): discord context of the command
+        """
+        # Get credentials from the discord context 
+        server_id = str(ctx.guild.id)
         
-        for index, quest in enumerate(list_quests):
-            quest_index = index + 1
+        dict_users_quests = await database_module.get_quests_from_server(database=database,
+                                                   server_id=server_id)
+        
+        # If dict is not empty
+        if dict_users_quests :
+        
+            # List all users into a string
+            list_user_name = ", ".join([bot.get_user(int(user_id)).global_name for user_id in dict_users_quests.keys()])
+                    
+            await ctx.reply(f"La liste des membres ayant renseigné une quête sur le comptoir est la suivante : {list_user_name}")
             
-            quest_category = label_module.read_category(quest["quest_category"])
-            quest_category_name = quest_category["name"]
-            quest_category_emoji = quest_category["discord_emoji"]
-            quest_label = label_module.read_label(quest["quest_label"])["name"]
-            quest_comments = quest["quest_comments"]
-            
-            # HACK : Function to add emoji based on difficulty tag : implement on a dict directly
-            quest_tag = label_module.read_label(quest["quest_label"])["tag"]
-            quest_tag_name = label_module.read_tag(quest_tag)["name"]
-            quest_tag_emoji = label_module.read_tag(quest_tag)["discord_emoji"]            
-            
-            embed.add_field(name=f"{quest_category_emoji} Quête {quest_category_name} {quest_tag_name} #{quest_index}",
-                            value=f""":label: Nom : {quest_label} {quest_tag_emoji}\n:pencil: Commentaires : {quest_comments}""",
-                            inline=False)
-            
-        await ctx.reply(embed=embed)
+            # Build embed for each user with their quests
+            for user_id, quest_list in dict_users_quests.items():
+                
+                embed = embed_quest_list_from_member(bot.get_user(int(user_id)), quest_list)
+                
+                await ctx.send(embed=embed)  
+        else:
+            # Message if it's empty
+            await ctx.reply("Il n'y a aucune quête sur le comptoir : utilise `!ajout_quete` pour être le premier à en ajouter!")
+        
+        
         
     # Command to remove a quest from the user list (passing an index)
     @bot.command(aliases=["del", "supp"], help="Supprimes la quête indexé en argument de ta liste de quête")
