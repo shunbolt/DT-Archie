@@ -5,7 +5,7 @@ from pickledb import PickleDB
 from src.database import database_module 
 from src.label import label_module
 
-HELPER_ROLE_NAME = "Helper"
+MENTION_ROLE_NAME = "Archie"
 
 def bot_commands(bot : commands.Bot, database : PickleDB):
     """
@@ -15,7 +15,81 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
         bot (commands.Bot): Discord bot instance
         database (PickleDB): PickleDB database for storing and querying data 
     """
+    # Subfunctions
+    # Display embed of quests from member
+    def embed_quest_list_from_member(member : discord.member, list_quests : list) -> discord.Embed:
+        """Subfunction to build the embed message of the list of quests from a member
+
+        Args:
+            member (discord.member): Discord memeber to display quests from
+            list_quests (list): List of it's quests from the data
+        """
+        # Build embed with the quests information
+        embed = discord.Embed(title=f"Quêtes de {member.display_name} sur le comptoir de quêtes de la guilde :")
+        embed.set_thumbnail(url=member.avatar.url)
+        
+        for index, quest in enumerate(list_quests):
+            quest_index = index + 1
+            
+            quest_category = label_module.read_category(quest["quest_category"])
+            quest_category_name = quest_category["name"]
+            quest_category_emoji = quest_category["discord_emoji"]
+            quest_label = label_module.read_label(quest["quest_label"])["name"]
+            quest_comments = quest["quest_comments"]
+            
+            # Add emoji based on difficulty tag : implement on a dict directly
+            quest_tag = label_module.read_label(quest["quest_label"])["tag"]
+            quest_tag_name = label_module.read_tag(quest_tag)["name"]
+            quest_tag_emoji = label_module.read_tag(quest_tag)["discord_emoji"]            
+            
+            embed.add_field(name=f"{quest_category_emoji} Quête {quest_category_name} {quest_tag_name} #{quest_index}",
+                            value=f""":label: Nom : {quest_label} {quest_tag_emoji}\n:pencil: Commentaires : {quest_comments}""",
+                            inline=False)
+        
+        return embed
     
+    # Sends a message if the member belongs to the role
+    async def send_message_with_role(ctx : commands.Context, member : discord.member, required_role : str, msg : str):
+        """Sends a message if the member belongs to the given role in the server
+
+        Args:
+            member (discord.member): _description_
+            required_role (str): _description_
+            msg (str): _description_
+        """
+        # Check if member has the role
+        print(member.roles)
+        if required_role.lower() in [role.name.lower() for role in member.roles] :
+            # Sends message
+            await ctx.send(msg)
+    
+    # Check if the selected label belongs to the dict and send message to relevant members
+    async def mention_common_members(ctx : commands.Context, quest_label = None):
+        """Get the lists of members having the specified label quests in their list and mentions them in a message
+
+        Args:
+            ctx (commands.Context): discord context of the command
+            quest_label (_type_, optional): quest label to search for. Defaults to None.
+        """
+        server_id = str(ctx.guild.id)
+        
+        if quest_label:
+            dict_users_quests = await database_module.get_quests_from_server(database=database,
+                                                   server_id=server_id,
+                                                   filter_label=quest_label)
+            
+            # Get the list of members id with common members except yourself
+            list_members_id = [user_id for user_id in dict_users_quests.keys() if user_id != str(ctx.author.id)]
+            
+            for member_id in list_members_id:
+                member = bot.get_guild(int(server_id)).get_member(int(member_id))
+                print(member)
+                await send_message_with_role(ctx=ctx,
+                                             member=member,
+                                             required_role=MENTION_ROLE_NAME,
+                                             msg=f":dart: Le ou la mercenaire {member.mention} est en mesure de t'aider !")
+            
+            
     # Archie commands 
     # Command to insert a quest to the database
     @bot.command(aliases=["ajout", "add"], help="Ajoute une quête à ton nom")
@@ -85,39 +159,12 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
                 category_translated = label_module.read_category(quest_category)["name"]
                 
                 await ctx.reply(f"""Le ou la mercenaire {ctx.author.mention} a ajouté la quête suivante sur le comptoir de quêtes de la guilde :\nCatégorie : Quête {category_translated}\nNom : {label_dict["name"]}\nCommentaires : {quest_comments}""")
+
+                # Mention members that have the same label
+                await mention_common_members(ctx=ctx, quest_label=quest_label)
+            
             else:
                 await ctx.send(f"""Aucune quête n'a été trouvée avec le libellé : {quest_label}""")
-    
-    def embed_quest_list_from_member(member : discord.member, list_quests : list) -> discord.Embed:
-        """Subfunction to build the embed message of the list of quests from a member
-
-        Args:
-            member (discord.member): Discord memeber to display quests from
-            list_quests (list): List of it's quests from the data
-        """
-        # Build embed with the quests information
-        embed = discord.Embed(title=f"Quêtes de {member.display_name} sur le comptoir de quêtes de la guilde :")
-        embed.set_thumbnail(url=member.avatar.url)
-        
-        for index, quest in enumerate(list_quests):
-            quest_index = index + 1
-            
-            quest_category = label_module.read_category(quest["quest_category"])
-            quest_category_name = quest_category["name"]
-            quest_category_emoji = quest_category["discord_emoji"]
-            quest_label = label_module.read_label(quest["quest_label"])["name"]
-            quest_comments = quest["quest_comments"]
-            
-            # Add emoji based on difficulty tag : implement on a dict directly
-            quest_tag = label_module.read_label(quest["quest_label"])["tag"]
-            quest_tag_name = label_module.read_tag(quest_tag)["name"]
-            quest_tag_emoji = label_module.read_tag(quest_tag)["discord_emoji"]            
-            
-            embed.add_field(name=f"{quest_category_emoji} Quête {quest_category_name} {quest_tag_name} #{quest_index}",
-                            value=f""":label: Nom : {quest_label} {quest_tag_emoji}\n:pencil: Commentaires : {quest_comments}""",
-                            inline=False)
-        
-        return embed
     
     # Command to get all quests from the current user
     @bot.command(aliases=["lire", "read"], help="Affiches l'ensemble de tes quêtes sous forme d'indices")
@@ -155,14 +202,8 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
         server_id = str(ctx.guild.id)
         
         dict_users_quests = await database_module.get_quests_from_server(database=database,
-                                                   server_id=server_id)
-        
-        if quest_label:
-            # Keep only quests equal to the quest label
-            dict_users_quests = {
-                key : [quest for quest in list_quest if quest.get("quest_label") == quest_label] for key, list_quest in dict_users_quests.items() if 
-                [quest for quest in list_quest if quest.get("quest_label") == quest_label]
-            }
+                                                   server_id=server_id,
+                                                   filter_label=None)
         
         # If dict is not empty
         if dict_users_quests :
@@ -178,15 +219,16 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
                 embed = embed_quest_list_from_member(bot.get_guild(int(server_id)).get_member(int(user_id)), quest_list)
                 
                 await ctx.send(embed=embed)  
+                
+            await mention_common_members(ctx=ctx, quest_label=quest_label)
+            
         else:
             if quest_label:
                 # Message if there is no quest for the selected label
                 await ctx.reply("Il n'y a aucune quête de ce type sur le comptoir : utilise `!ajout_quete` pour en ajouter une!")
             else:
                 # Message if there is no quest at all
-                await ctx.reply("Il n'y a aucune quête sur le comptoir : utilise `!ajout_quete` pour être le premier à en ajouter!")
-        
-        
+                await ctx.reply("Il n'y a aucune quête sur le comptoir : utilise `!ajout_quete` pour être le premier à en ajouter!")  
         
     # Command to remove a quest from the user list (passing an index)
     @bot.command(aliases=["del", "supp"], help="Supprimes la quête indexé en argument de ta liste de quête")
@@ -231,5 +273,4 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
         """
         
         await ctx.send(label_module.read_help())
-
         

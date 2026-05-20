@@ -41,12 +41,14 @@ async def get_quests_from_user(database : PickleDB,
     return list_to_return
 
 async def get_quests_from_server(database : PickleDB,
-                                 server_id : str) -> dict:
+                                 server_id : str,
+                                 filter_label = None) -> dict:
     """Function to retrieve all quests of a server as a 
 
     Args:
         database (PickleDB): Database to store quest info
         server_id (str): Discord server id where the command comes from
+        filter_label (str, optional): label to filter the dict upon
         
     Returns:
         dict: dict of the quests with their user id as keys
@@ -64,6 +66,14 @@ async def get_quests_from_server(database : PickleDB,
             key.split(KEY_SEPARATOR)[1] : await database.get(key, default=[])
             for key in users_from_server_keys if await database.get(key, default=[])
         } 
+    
+    if filter_label:
+        # Keep only quests equal to the quest label
+        dict_server_quests = {
+            key : [quest for quest in list_quest if quest.get("quest_label") == filter_label] 
+            for key, list_quest in dict_server_quests.items() 
+            if [quest for quest in list_quest if quest.get("quest_label") == filter_label]
+        }
     
     return dict_server_quests
     
