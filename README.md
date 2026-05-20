@@ -31,11 +31,12 @@ Link to the Archie bot install
 
 ## Usage
 
-You can use the bot with the following commands :
+You can use the main commands :
 
 ```sh
 !ajout_quete [quest_label] [quest_comments] // Add a quest to the user billboard with the corresponding label / comments
 !lire_quetes // Display the list of quests of the user
+!lire_toutes_quetes // Display the list of all published quests
 !supp_quete [index] // Delete a quest from the list of user quest given it's index on the billboard
 ```
 Whenever you need help, use the `!aide` command to get the list of available commands.

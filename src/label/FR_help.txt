@@ -14,6 +14,8 @@
     te permet d'ajouter une quête indiquant que tu souhaites faire un donjon Kwakwa en full succès !
     :arrow_forward: Tu peux avoir la liste complète des libellés avec la commande `!ajout_quete` sans libellé
 :speech_left:  `!lire_quetes` : Affiches l'ensemble de tes quêtes sous forme d'indices. Aliases=(`!lire`, `!read`)
+:speech_left:  `!lire_toutes_quetes [libellé]` : Affiche l'ensemble de quête publiée dns le comptoir par membre. Aliases=(`!lire_tout`, `!read_all`) 
+    Tu peux aussi ajouter optionnellement un libellé de quête pour filtrer sur les quêtes de ce libellé précis  
 :speech_left:  `!supp_quete [index]` : Supprimes la quête indexé en argument de ta liste de quête. Aliases=(`!supp`, `!del`) 
 
 :mega: Lorsque des quêtes sont ajoutées, tu seras informé des autres membres ayant une quête commune aux tiennes pour que vous puissiez réaliser les quêtes ensemble ! :clap: :gift: :tada: 
