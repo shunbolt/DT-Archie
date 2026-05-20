@@ -1,6 +1,8 @@
 import os
 from pickledb import PickleDB
 
+KEY_SEPARATOR = "_"
+
 def create_database(path_database : str, name_database : str) -> PickleDB :
     """Function to create the database from the specified json file
 
@@ -32,11 +34,41 @@ async def get_quests_from_user(database : PickleDB,
     
     await database.load()
     
-    key = server_id + "_" + user_id
+    key = server_id + KEY_SEPARATOR + user_id
     
     list_to_return = await database.get(key, default=[])
     
     return list_to_return
+
+async def get_quests_from_server(database : PickleDB,
+                                 server_id : str) -> dict:
+    """Function to retrieve all quests of a server as a 
+
+    Args:
+        database (PickleDB): Database to store quest info
+        server_id (str): Discord server id where the command comes from
+        
+    Returns:
+        dict: dict of the quests with their user id as keys
+    """
+    
+    await database.load()
+    
+    list_keys = await database.all()
+    
+    users_from_server_keys = [key for key in list_keys if key.split(KEY_SEPARATOR)[0] == server_id]
+    users_from_server_keys.sort()
+    
+    # Retrieve server specific users with non null values
+    dict_server_quests = {
+            key.split(KEY_SEPARATOR)[1] : await database.get(key, default=[])
+            for key in users_from_server_keys if await database.get(key, default=[])
+        } 
+    
+    print(dict_server_quests)
+    
+    return dict_server_quests
+    
 
 async def insert_quest(database : PickleDB,
                  server_id : str,
@@ -77,8 +109,7 @@ async def insert_quest(database : PickleDB,
     
     list_quests.append(dict_to_insert)
     
-    # FIXME key value redundant with get_quests_from_user : use a class instead ?
-    key = server_id + "_" + user_id
+    key = server_id + KEY_SEPARATOR + user_id
     await database.set(key, list_quests)
     
     await database.save()
@@ -113,7 +144,7 @@ async def remove_quest_from_index(database : PickleDB,
     else:
         return -1
     
-    # FIXME key value redundant with get_quests_from_user : use a class instead ?
+    
     key = server_id + "_" + user_id
     await database.set(key, list_quests)
     
