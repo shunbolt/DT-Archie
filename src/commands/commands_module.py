@@ -144,17 +144,25 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
     
     # Command to get all quests from the current server
     @bot.command(aliases=["lire_tout", "read_all"], help="Affiches l'ensemble des quêtes de tous les membres du serveur")
-    async def lire_toutes_quetes(ctx : commands.Context): 
+    async def lire_toutes_quetes(ctx : commands.Context, quest_label = None): 
         """Function to read all quests from the server
 
         Args:
             ctx (discord.Context): discord context of the command
+            quest_label (str): first optional argument corresponding to the label to filter
         """
         # Get credentials from the discord context 
         server_id = str(ctx.guild.id)
         
         dict_users_quests = await database_module.get_quests_from_server(database=database,
                                                    server_id=server_id)
+        
+        if quest_label:
+            # Keep only quests equal to the quest label
+            dict_users_quests = {
+                key : [quest for quest in list_quest if quest.get("quest_label") == quest_label] for key, list_quest in dict_users_quests.items() if 
+                [quest for quest in list_quest if quest.get("quest_label") == quest_label]
+            }
         
         # If dict is not empty
         if dict_users_quests :
@@ -171,8 +179,12 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
                 
                 await ctx.send(embed=embed)  
         else:
-            # Message if it's empty
-            await ctx.reply("Il n'y a aucune quête sur le comptoir : utilise `!ajout_quete` pour être le premier à en ajouter!")
+            if quest_label:
+                # Message if there is no quest for the selected label
+                await ctx.reply("Il n'y a aucune quête de ce type sur le comptoir : utilise `!ajout_quete` pour en ajouter une!")
+            else:
+                # Message if there is no quest at all
+                await ctx.reply("Il n'y a aucune quête sur le comptoir : utilise `!ajout_quete` pour être le premier à en ajouter!")
         
         
         
