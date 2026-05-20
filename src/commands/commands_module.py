@@ -35,7 +35,7 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
         server_id = str(ctx.guild.id)
         user_id = str(ctx.author.id)
         server_name = ctx.guild.name
-        user_name = ctx.author.name
+        user_name = ctx.author.display_name
         
         if (quest_label in help_labels):
             # Read list of all labels
@@ -96,7 +96,7 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
             list_quests (list): List of it's quests from the data
         """
         # Build embed with the quests information
-        embed = discord.Embed(title=f"Quêtes de {member.name} sur le comptoir de quêtes de la guilde :")
+        embed = discord.Embed(title=f"Quêtes de {member.display_name} sur le comptoir de quêtes de la guilde :")
         embed.set_thumbnail(url=member.avatar.url)
         
         for index, quest in enumerate(list_quests):
@@ -160,14 +160,14 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
         if dict_users_quests :
         
             # List all users into a string
-            list_user_name = ", ".join([bot.get_user(int(user_id)).global_name for user_id in dict_users_quests.keys()])
+            list_user_name = ", ".join([bot.get_guild(int(server_id)).get_member(int(user_id)).display_name for user_id in dict_users_quests.keys()])
                     
             await ctx.reply(f"La liste des membres ayant renseigné une quête sur le comptoir est la suivante : {list_user_name}")
             
             # Build embed for each user with their quests
             for user_id, quest_list in dict_users_quests.items():
                 
-                embed = embed_quest_list_from_member(bot.get_user(int(user_id)), quest_list)
+                embed = embed_quest_list_from_member(bot.get_guild(int(server_id)).get_member(int(user_id)), quest_list)
                 
                 await ctx.send(embed=embed)  
         else:
@@ -201,9 +201,9 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
             )
             
             if(status_code == 0):
-                await ctx.reply(f"La quête de {ctx.author.name} numérotée {arg} a été correctement supprimée")
+                await ctx.reply(f"La quête de {ctx.author.display_name} numérotée {arg} a été correctement supprimée")
             else:
-                await ctx.send(f"La quête de {ctx.author.name} numérotée {arg} n'est pas trouvable")
+                await ctx.send(f"La quête de {ctx.author.display_name} numérotée {arg} n'est pas trouvable")
         else:
             await ctx.send("Numéro d'index inconnu on non reconnu : veuillez réessayer")
         
