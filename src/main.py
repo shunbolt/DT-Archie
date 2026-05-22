@@ -24,12 +24,12 @@ def startup_bot():
     token = os.getenv('DISCORD_TOKEN')
     
     # Build logger output from the bot
-    log_directory = os.path.join(SCRIPT_PATH, "logs")
+    log_directory = os.path.join(SCRIPT_PATH, "..", "logs")
     log_filename = f"discord_{CURRENT_DATE}.log"
     handler = logger_module.create_logger(path_logfile=log_directory, name_logfile=log_filename, mode='a')
     
     # Build or instantiate database using pickledb
-    database_directory = os.path.join(SCRIPT_PATH, "data")
+    database_directory = os.path.join(SCRIPT_PATH, "..", "data")
     database_name = "discord_archie_data.json"
     database = database_module.create_database(path_database=database_directory, name_database=database_name)
     
@@ -46,9 +46,5 @@ def startup_bot():
     
     bot.run(token, log_handler=handler, log_level=logging.DEBUG)
 
-def main():
-    startup_bot()
-
-
 if __name__ == "__main__":
-    main()
+    startup_bot()

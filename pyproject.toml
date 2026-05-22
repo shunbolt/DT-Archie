@@ -11,6 +11,9 @@ dependencies = [
 ]
 license = {file = "LICENSE"}
 
+[project.scripts]
+dt_archie = "src.main:startup_bot"
+
 [dependency-groups]
 check = [
     "ruff>=0.15.13",
@@ -21,6 +24,9 @@ commit = [
 
 [build-system]
 requires = ["setuptools"]
+
+[tool.setuptools]
+packages = ["src"]
 
 [tool.commitizen]
 name = "cz_conventional_commits"

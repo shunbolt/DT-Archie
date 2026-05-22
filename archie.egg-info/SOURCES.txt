@@ -1,0 +1,11 @@
+LICENSE
+README.md
+pyproject.toml
+archie.egg-info/PKG-INFO
+archie.egg-info/SOURCES.txt
+archie.egg-info/dependency_links.txt
+archie.egg-info/entry_points.txt
+archie.egg-info/requires.txt
+archie.egg-info/top_level.txt
+src/__init__.py
+src/main.py
