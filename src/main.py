@@ -22,6 +22,10 @@ def startup_bot():
     # Load env variables
     load_dotenv()
     token = os.getenv('DISCORD_TOKEN')
+    server_admin_id = int(os.getenv('SERVER_ADMIN_ID'))
+    channel_admin_id_database = int(os.getenv('CHANNEL_ADMIN_ID_DATABASE'))
+    channel_admin_id_logs = int(os.getenv('CHANNEL_ADMIN_ID_LOGS'))
+    user_admin_id = int(os.getenv('USER_ADMIN_ID'))
     
     # Build logger output from the bot
     log_directory = os.path.join(SCRIPT_PATH, "..", "logs")
@@ -30,8 +34,8 @@ def startup_bot():
     
     # Build or instantiate database using pickledb
     database_directory = os.path.join(SCRIPT_PATH, "..", "data")
-    database_name = "discord_archie_data.json"
-    database = database_module.create_database(path_database=database_directory, name_database=database_name)
+    database_filename = "discord_archie_data.json"
+    database = database_module.create_database(path_database=database_directory, name_database=database_filename)
     
     # Setup intents akin to discord dev API page
     intents = discord.Intents.default()
@@ -41,7 +45,14 @@ def startup_bot():
     # Setup bot with respective events and commands
     bot = commands.Bot(command_prefix='!', intents=intents)
     
-    events_module.bot_events(bot)
+    events_module.bot_events(bot=bot,
+                             database_filepath=os.path.join(database_directory, database_filename),
+                             log_filepath=os.path.join(log_directory, log_filename),
+                             server_admin_id=server_admin_id,
+                             channel_admin_id_database=channel_admin_id_database,
+                             channel_admin_id_logs=channel_admin_id_logs,
+                             user_admin_id=user_admin_id)
+    
     commands_module.bot_commands(bot, database)
     
     bot.run(token, log_handler=handler, log_level=logging.DEBUG)
