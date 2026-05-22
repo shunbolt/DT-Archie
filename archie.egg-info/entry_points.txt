@@ -1,0 +1,2 @@
+[console_scripts]
+dt_archie = src.main:startup_bot

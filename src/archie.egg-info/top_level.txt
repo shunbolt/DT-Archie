@@ -4,3 +4,4 @@ database
 events
 label
 logger
+main

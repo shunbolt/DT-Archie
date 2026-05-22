@@ -2,9 +2,11 @@ LICENSE
 README.md
 pyproject.toml
 src/__init__.py
+src/main.py
 src/archie.egg-info/PKG-INFO
 src/archie.egg-info/SOURCES.txt
 src/archie.egg-info/dependency_links.txt
+src/archie.egg-info/entry_points.txt
 src/archie.egg-info/requires.txt
 src/archie.egg-info/top_level.txt
 src/commands/__init__.py
