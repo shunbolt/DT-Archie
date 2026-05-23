@@ -25,9 +25,9 @@ def bot_events(bot : commands.Bot,
         database_filepath (str) : Path to the database file
         log_filepath (str) : Path to the log file
         server_admin_id (int): id of the admin server
-        channel_admin_id_database (int): _description_
-        channel_admin_id_logs (int): _description_
-        user_admin_id (int): _description_
+        channel_admin_id_database (int): id of the channel in admin server to send database info
+        channel_admin_id_logs (int): id of the channel in admin server to send logs info
+        user_admin_id (int): id of the admin server owner
     """
     
     # Events of the bot to override
@@ -53,8 +53,6 @@ def bot_events(bot : commands.Bot,
             if logs_admin_channel and isinstance(logs_admin_channel, discord.TextChannel):
                 await logs_admin_channel.send(file=discord.File(log_filepath))
         else:
-            print(server_admin_id)
-            print(admin_guild)
             print("Admin guild not found : please verify specified IDS in env")
 
     @send_backup.before_loop
