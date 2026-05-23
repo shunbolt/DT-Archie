@@ -27,6 +27,7 @@ def startup_bot():
     channel_admin_id_database = int(os.getenv("CHANNEL_ADMIN_ID_DATABASE"))
     channel_admin_id_logs = int(os.getenv("CHANNEL_ADMIN_ID_LOGS"))
     channel_admin_id_cli = int(os.getenv("CHANNEL_ADMIN_ID_CLI"))
+    channel_admin_id_restore_database = int(os.getenv("CHANNEL_ADMIN_ID_RESTORE_DATABASE"))
     user_admin_id = int(os.getenv("USER_ADMIN_ID"))
 
     # Build logger output from the bot
@@ -64,6 +65,7 @@ def startup_bot():
         channel_admin_id_database=channel_admin_id_database,
         channel_admin_id_logs=channel_admin_id_logs,
         channel_admin_cli=channel_admin_id_cli,
+        channel_admin_id_restore_database=channel_admin_id_restore_database,
         user_admin_id=user_admin_id,
     )
 
@@ -79,7 +81,7 @@ def startup_bot():
     )
 
     # Run the bot
-    bot.run(token, log_handler=handler, log_level=logging.INFO)
+    bot.run(token, log_handler=handler, log_level=logging.DEBUG)
 
 
 if __name__ == "__main__":
