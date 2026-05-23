@@ -160,5 +160,63 @@ async def remove_quest_from_index(database : PickleDB,
     
     return 0
     
+async def purge_database(database : PickleDB) -> bool:
+    """Function to remove the entire database
+    Should only be used under admin commands
+
+    Args:
+        database (PickleDB): Database to store quest info
+    """
+    await database.load()
+    
+    status_code = await database.purge()
+    
+    await database.save()
+    
+    return status_code
+    
+async def purge_database_server(database : PickleDB, server_id : str) -> bool:
+    """Function to remove all entries of a specific database
+    Should only be used under admin commands
+
+    Args:
+        database (PickleDB): Database to store quest info
+        server_id (str) : server id to delete all keys from
+    """
+    
+    await database.load()
+    
+    list_keys = await database.all()
+    
+    # Get keys of specified server
+    server_keys = [key for key in list_keys if key.split(KEY_SEPARATOR)[0] == server_id]
+    
+    # Remove each key
+    # List of booleans, return False if any False else return True
+    list_status_code = [await database.remove(key) for key in server_keys]
+    
+    await database.save()
+    
+    # Return False if any value is false
+    if not all(list_status_code):
+        return False
+    else:
+        return True
+
+async def purge_database_key(database : PickleDB, key : str) -> bool:
+    """Function to remove a specific entry using it's key
+
+    Args:
+        database (PickleDB): Database to store quest info
+        server_id (str) : server id to delete all keys from
+    """
+    
+    await database.load()
+    
+    status_code = await database.remove(key)
+    
+    await database.save()
+    
+    return status_code
     
     
