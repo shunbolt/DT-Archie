@@ -1,3 +1,9 @@
+## 0.5.0 (2026-05-23)
+
+### Refactor
+
+- **main**: logger on INFO level
+
 ## 0.4.0 (2026-05-23)
 
 ### Feat
