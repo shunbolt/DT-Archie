@@ -8,7 +8,7 @@
         "discord_emoji" : ":orange_book:" 
     },
     "hard" : {
-        "name": "Avancé" ,
+        "name": "Avancée" ,
         "discord_emoji" :":closed_book:" 
     },
     "very_hard" : {
