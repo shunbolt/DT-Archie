@@ -58,7 +58,6 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
             msg (str): _description_
         """
         # Check if member has the role
-        print(member.roles)
         if required_role.lower() in [role.name.lower() for role in member.roles] :
             # Sends message
             await ctx.send(msg)
@@ -83,7 +82,6 @@ def bot_commands(bot : commands.Bot, database : PickleDB):
             
             for member_id in list_members_id:
                 member = bot.get_guild(int(server_id)).get_member(int(member_id))
-                print(member)
                 await send_message_with_role(ctx=ctx,
                                              member=member,
                                              required_role=MENTION_ROLE_NAME,
