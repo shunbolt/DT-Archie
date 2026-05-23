@@ -232,3 +232,22 @@ async def purge_database_key(database: PickleDB, key: str) -> bool:
     await database.save()
 
     return status_code
+
+async def replace_database(database: PickleDB, dict_backup : dict) -> bool:
+    """Function to replace the database with the one passed as parameter
+
+    Args:
+        database (PickleDB): Database to store quest info
+        dict_backup (dict): dictionnary of values to replace
+
+    Returns:
+        bool: status_code
+    """
+    await database.load()
+    
+    await purge_database(database=database)
+    
+    for key, value in dict_backup.items():
+        await database.set(key, value)
+        
+    await database.save()

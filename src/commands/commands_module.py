@@ -1,3 +1,5 @@
+import discord
+import json
 from discord.ext import commands
 from pickledb import PickleDB
 
@@ -14,6 +16,7 @@ def bot_commands_admin(
     channel_admin_id_database: int,
     channel_admin_id_logs: int,
     channel_admin_cli: int,
+    channel_admin_id_restore_database: int,
     user_admin_id: int,
 ):
     """Initialize all events handled by the bot
@@ -27,6 +30,7 @@ def bot_commands_admin(
         channel_admin_id_database (int): id of the channel in admin server to send database info
         channel_admin_id_logs (int): id of the channel in admin server to send logs info
         channel_admin_cli (int) : id of the channel in admin server allowed to use commands
+        channel_admin_id_restore_database (int) : id of the channel in admin server to read data backup from
         user_admin_id (int): id of the admin server owner
     """
 
@@ -117,3 +121,45 @@ def bot_commands_admin(
             await ctx.send(
                 f"Key {key_id} couldn't be found or deleted from the database : check logs "
             )
+
+    @bot.command()
+    @commands.check(check_admin_command)
+    async def restore_database(ctx: commands.Context, message_id: str):
+        """Use the id passed as message id in the dedicated channel id to resotre database 
+
+        Args:
+            ctx (commands.Context): Discord context
+            message_id : id of the message to retrieve file from
+        """
+        
+        restore_database_channel = bot.get_channel(channel_admin_id_restore_database)
+        
+        if restore_database_channel is None:
+            await ctx.send("The restore_database id channel hasnt been found : check env value")
+            return
+        
+        try:
+            message = await restore_database_channel.fetch_message(int(message_id))
+        except discord.NotFound:
+            await ctx.send("The message passed in argument couldn't be found")
+            return
+        except discord.Forbidden:
+            await ctx.send("No permission to read message")
+            return
+
+        if not message.attachments:
+            await ctx.send("No attachments in message")
+            return
+        
+        backup_database_file = await message.attachments[0].read()
+        
+        try:
+            backup_file_content = backup_database_file.decode('utf-8')
+            dict_backup = json.loads(backup_file_content)
+        except (UnicodeDecodeError, json.JSONDecodeError) as e:
+            await ctx.send(f"Error parsing file: {e}. Not recognized as JSON file")
+            return
+        
+        await database_module.replace_database(database=database, dict_backup=dict_backup)
+        
+        await ctx.send("Restored database successfully")
