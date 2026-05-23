@@ -72,7 +72,7 @@ def startup_bot():
                              user_admin_id=user_admin_id)
     
     # Run the bot
-    bot.run(token, log_handler=handler, log_level=logging.DEBUG)
+    bot.run(token, log_handler=handler, log_level=logging.INFO)
 
 if __name__ == "__main__":
     startup_bot()
