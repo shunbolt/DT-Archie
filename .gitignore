@@ -1,6 +1,6 @@
 .venv
 .env
-*.egg
+archie.egg-info
 
 # Log directory
 logs
