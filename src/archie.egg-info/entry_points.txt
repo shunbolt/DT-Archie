@@ -1,2 +1,0 @@
-[console_scripts]
-dt_archie = src:main
