@@ -25,6 +25,7 @@ def startup_bot():
     server_admin_id = int(os.getenv('SERVER_ADMIN_ID'))
     channel_admin_id_database = int(os.getenv('CHANNEL_ADMIN_ID_DATABASE'))
     channel_admin_id_logs = int(os.getenv('CHANNEL_ADMIN_ID_LOGS'))
+    channel_admin_id_cli = int(os.getenv('CHANNEL_ADMIN_ID_CLI'))
     user_admin_id = int(os.getenv('USER_ADMIN_ID'))
     
     # Build logger output from the bot
@@ -45,6 +46,7 @@ def startup_bot():
     # Setup bot with respective events and commands
     bot = commands.Bot(command_prefix='!', intents=intents)
     
+    # Setup events
     events_module.bot_events(bot=bot,
                              database_filepath=os.path.join(database_directory, database_filename),
                              log_filepath=os.path.join(log_directory, log_filename),
@@ -53,8 +55,23 @@ def startup_bot():
                              channel_admin_id_logs=channel_admin_id_logs,
                              user_admin_id=user_admin_id)
     
-    commands_module.bot_commands(bot, database)
+    # Setup non-admin commands
+    commands_module.bot_commands(bot=bot, database=database)
     
+    # Setup admin commands
+    commands_module.bot_commands_admin(
+        bot=bot,
+        database=database,
+        database_filepath=os.path.join(database_directory, database_filename),
+        log_filepath=os.path.join(log_directory, log_filename),
+        server_admin_id=server_admin_id,
+        channel_admin_id_database=channel_admin_id_database,
+        channel_admin_id_logs=channel_admin_id_logs,
+        channel_admin_cli=channel_admin_id_cli,
+        user_admin_id=user_admin_id
+    )
+    
+    # Run the bot
     bot.run(token, log_handler=handler, log_level=logging.DEBUG)
 
 if __name__ == "__main__":
