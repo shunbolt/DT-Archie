@@ -7,15 +7,16 @@ PATH_TO_LABEL_FR = os.path.join(SCRIPT_PATH, "FR_label.json")
 PATH_TO_CATEGORY_FR = os.path.join(SCRIPT_PATH, "FR_category.json") 
 PATH_TO_TAG_FR = os.path.join(SCRIPT_PATH, "FR_tag.json") 
 PATH_TO_HELP_FR = os.path.join(SCRIPT_PATH, "FR_help.txt")
+PATH_TO_HELP_SLASH_FR = os.path.join(SCRIPT_PATH, "FR_help_slash.txt")
 
-def read_full_label(lang = "FR") -> list:
+def read_full_label(lang = "FR") -> dict:
     """Read the entire label file
 
     Args:
         lang (str, optional): Language to use. Defaults to "FR".
 
     Returns:
-        list: List of dict contained in the full file
+        dict: dict of dict contained in the full file
     """
     with open(PATH_TO_LABEL_FR, 'r', encoding='utf-8') as file:
         label_data = json.load(file)
@@ -66,17 +67,22 @@ def read_tag(tag : str, lang = "FR") -> dict:
         
     return tag_data.get(tag)
 
-def read_help(lang ="FR") -> str:
+def read_help(lang ="FR", help_type=None) -> str:
     """Read the content of the help file
 
     Args:
         lang (str, optional): Language to use. Defaults to "FR".
+        help_type (str, optional): Type of help. Defaults to prefix commands.
 
     Returns:
         str: Help content
     """
     
-    with open(PATH_TO_HELP_FR, 'r', encoding='utf-8') as file:
-        help_content = file.read()
+    if help_type == "/":
+        with open(PATH_TO_HELP_SLASH_FR, 'r', encoding='utf-8') as file:
+            help_content = file.read()
+    else:
+        with open(PATH_TO_HELP_FR, 'r', encoding='utf-8') as file:
+            help_content = file.read()
         
     return help_content

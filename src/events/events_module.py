@@ -35,11 +35,14 @@ def bot_events(bot : commands.Bot,
     async def on_ready():
         print(f"We are ready to go in, {bot.user.name}")
         
+        # Sync tree commands
+        await bot.tree.sync()
+        
         # Start backup loop coroutine    
         send_backup.start()
 
 
-    @tasks.loop(time=dtt(hour=1, minute=21, second=0, tzinfo=FRANCE_TIMEZONE))  # Runs at 23:50:30 UTC2
+    @tasks.loop(time=dtt(hour=23, minute=50, second=30, tzinfo=FRANCE_TIMEZONE))  # Runs at 23:50:30 UTC2
     async def send_backup():
         # Look for admin guild
         admin_guild = bot.get_guild(server_admin_id)

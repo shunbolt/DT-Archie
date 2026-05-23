@@ -8,7 +8,7 @@ import datetime
 # Import modules from src folder 
 from src.logger import logger_module
 from src.events import events_module
-from src.commands import commands_module
+from src.commands import commands_module , slash_commands_module
 from src.database import database_module
 
 SCRIPT_PATH = os.path.dirname(__file__)
@@ -46,17 +46,8 @@ def startup_bot():
     # Setup bot with respective events and commands
     bot = commands.Bot(command_prefix='!', intents=intents)
     
-    # Setup events
-    events_module.bot_events(bot=bot,
-                             database_filepath=os.path.join(database_directory, database_filename),
-                             log_filepath=os.path.join(log_directory, log_filename),
-                             server_admin_id=server_admin_id,
-                             channel_admin_id_database=channel_admin_id_database,
-                             channel_admin_id_logs=channel_admin_id_logs,
-                             user_admin_id=user_admin_id)
-    
     # Setup non-admin commands
-    commands_module.bot_commands(bot=bot, database=database)
+    slash_commands_module.bot_commands(bot=bot, database=database)
     
     # Setup admin commands
     commands_module.bot_commands_admin(
@@ -70,6 +61,15 @@ def startup_bot():
         channel_admin_cli=channel_admin_id_cli,
         user_admin_id=user_admin_id
     )
+    
+    # Setup events
+    events_module.bot_events(bot=bot,
+                             database_filepath=os.path.join(database_directory, database_filename),
+                             log_filepath=os.path.join(log_directory, log_filename),
+                             server_admin_id=server_admin_id,
+                             channel_admin_id_database=channel_admin_id_database,
+                             channel_admin_id_logs=channel_admin_id_logs,
+                             user_admin_id=user_admin_id)
     
     # Run the bot
     bot.run(token, log_handler=handler, log_level=logging.DEBUG)
