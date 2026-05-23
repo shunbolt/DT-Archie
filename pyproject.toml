@@ -1,6 +1,6 @@
 [project]
 name = "archie"
-version = "0.3.0"
+version = "0.5.0"
 description = "Discord bot helper for Dofus Touch daily quests"
 readme = "README.md"
 requires-python = ">=3.14"

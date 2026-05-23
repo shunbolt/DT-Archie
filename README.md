@@ -18,8 +18,6 @@ The bot has been developped in Python and specifically with the discord.py libra
   - [Usage](#usage)
   - [Authors](#authors)
   - [Data usage](#data-usage)
-  - [Thanks](#thanks)
-  - [Contributing](#contributing)
   - [License](#license)
 
 
@@ -34,12 +32,12 @@ Link to the Archie bot install
 You can use the main commands :
 
 ```sh
-!ajout_quete [quest_label] [quest_comments] // Add a quest to the user billboard with the corresponding label / comments
-!lire_quetes // Display the list of quests of the user
-!lire_toutes_quetes // Display the list of all published quests
-!supp_quete [index] // Delete a quest from the list of user quest given it's index on the billboard
+/ajout_quete [quest_label] [quest_comments] // Add a quest to the user billboard with the corresponding label / comments
+/lire_quetes // Display the list of quests of the user
+/lire_toutes_quetes // Display the list of all published quests
+/supp_quete [index] // Delete a quest from the list of user quest given it's index on the billboard
 ```
-Whenever you need help, use the `!aide` command to get the list of available commands.
+Whenever you need help, use the `/aide` command to get the list of available commands.
 
 ## Authors
 
@@ -51,10 +49,6 @@ Discord ID : Shunbolt#1312
 
 Only discord and server ids are stored in the database to handle quests.
 No data will be use for commercial purposes
-
-## Thanks
-
-## Contributing
 
 ## License
 
