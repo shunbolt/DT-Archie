@@ -126,7 +126,7 @@ async def insert_quest(database : PickleDB,
 async def remove_quest_from_index(database : PickleDB,
                                   server_id : str,
                                   user_id : str,
-                                  idx : int) -> int:
+                                  idx : int) -> str:
     """Function to remove a quest from the user given it's index
 
     Args:
@@ -135,7 +135,7 @@ async def remove_quest_from_index(database : PickleDB,
         user_id (str): User id where the command comes from
         idx (int): Index to remove
     Returns:
-        int: Status code 
+        str: quest_label named removed. None if no quest has been found
     """
     
     await database.load()
@@ -145,20 +145,20 @@ async def remove_quest_from_index(database : PickleDB,
         server_id=server_id,
         user_id=user_id
     )
-    
+    quest_label_deleted = None
     # Handle out of bound list condition
     if idx < len(list_quests):
+        quest_label_deleted = list_quests[idx].get("quest_label")
         del list_quests[idx]
     else:
-        return -1
-    
+        return None
     
     key = server_id + "_" + user_id
     await database.set(key, list_quests)
     
     await database.save()
     
-    return 0
+    return quest_label_deleted
     
 async def purge_database(database : PickleDB) -> bool:
     """Function to remove the entire database
