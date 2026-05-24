@@ -101,6 +101,7 @@ async def insert_quest(
     quest_category="dungeon",
     quest_label="",
     quest_comments="",
+    helper_flag=False
 ):
     """Function to insert a quest in the given database
 
@@ -123,6 +124,7 @@ async def insert_quest(
         "quest_category": quest_category,
         "quest_label": quest_label,
         "quest_comments": quest_comments,
+        "helper_flag": helper_flag
     }
 
     list_quests = await get_quests_from_user(
