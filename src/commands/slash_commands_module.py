@@ -6,8 +6,6 @@ from pickledb import PickleDB
 from src.database import database_module
 from src.label import label_module
 
-MENTION_ROLE_NAME = "Archie"
-
 
 def bot_commands(bot: commands.Bot, database: PickleDB):
     """
@@ -20,7 +18,6 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
     # Subfunctions
     # Display embed of quests from member
-    # TODO : handle display of single quest by not displaying index value
     def embed_quest_list_from_member(
         member: discord.member, list_quests: list, hide_index=False
     ) -> discord.Embed:
@@ -109,12 +106,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
             for member_id in list_members_id:
                 member = bot.get_guild(int(server_id)).get_member(int(member_id))
-                await send_message_with_role(
-                    interaction=interaction,
-                    member=member,
-                    required_role=MENTION_ROLE_NAME,
-                    msg=f":dart: Le ou la mercenaire {member.mention} est en mesure de t'aider !",
-                )
+                await interaction.followup.send(content=f":dart: Le ou la mercenaire {member.mention} est en mesure de t'aider !")
 
     # Archie commands
     # Command to insert a quest to the database
