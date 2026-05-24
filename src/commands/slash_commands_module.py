@@ -35,8 +35,22 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         embed.set_thumbnail(url=member.avatar.url)
 
         for index, quest in enumerate(list_quests):
-            quest_index = index + 1
+            # Get index for the quest
+            if hide_index:
+                quest_index = ""
+            else:
+                quest_index = f"#{index + 1}"
+                
+            # Get helper value
+            quest_helper_flag = quest.get("helper_flag")
 
+            # Adjust quest_prefix based on helper flag value
+            if quest_helper_flag:
+                quest_prefix = ":star2: :star2: :star2: Assistant de quête"
+            else:
+                quest_prefix = "Quête"
+
+            # Get quest components to display
             quest_category = label_module.read_category(quest["quest_category"])
             quest_category_name = quest_category["name"]
             quest_category_emoji = quest_category["discord_emoji"]
@@ -48,10 +62,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             quest_tag_name = label_module.read_tag(quest_tag)["name"]
             quest_tag_emoji = label_module.read_tag(quest_tag)["discord_emoji"]
 
-            if hide_index:
-                embed_name = f"{quest_category_emoji} Quête {quest_category_name} {quest_tag_name}"
-            else:
-                embed_name = f"{quest_category_emoji} Quête {quest_category_name} {quest_tag_name} #{quest_index}"
+            embed_name = f"{quest_category_emoji} {quest_prefix} {quest_category_name} {quest_tag_name} {quest_index}"
 
             embed.add_field(
                 name=embed_name,
@@ -60,25 +71,6 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             )
 
         return embed
-
-    # Sends a message if the member belongs to the role
-    async def send_message_with_role(
-        interaction: discord.Interaction,
-        member: discord.member,
-        required_role: str,
-        msg: str,
-    ):
-        """Sends a message if the member belongs to the given role in the server
-
-        Args:
-            member (discord.member): _description_
-            required_role (str): _description_
-            msg (str): _description_
-        """
-        # Check if member has the role
-        if required_role.lower() in [role.name.lower() for role in member.roles]:
-            # Sends message
-            await interaction.followup.send(content=msg)
 
     # Check if the selected label belongs to the dict and send message to relevant members
     async def mention_common_members(
@@ -103,21 +95,35 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 for user_id in dict_users_quests.keys()
                 if user_id != str(interaction.user.id)
             ]
+            
+            helper_members_id = [
+                user_id
+                for user_id in dict_users_quests.keys()
+                if user_id != str(interaction.user.id) and any([el.get("helper_flag") for el in dict_users_quests[user_id]])
+            ]
 
             for member_id in list_members_id:
                 member = bot.get_guild(int(server_id)).get_member(int(member_id))
-                await interaction.followup.send(content=f":dart: Le ou la mercenaire {member.mention} est en mesure de t'aider !")
+                
+                if member_id in helper_members_id:
+                    message = f":sparkles: Mercenaire {member.mention} est un assistant qui peut t'aider à accomplir ta quête !"
+                else:
+                    message = f":dart: Mercenaire {member.mention} partage la même quête que toi et peut t'aider !"
+                
+                await interaction.followup.send(content=message)
 
     # Archie commands
     # Command to insert a quest to the database
     @bot.tree.command(name="ajout_quete", description="Ajoute une quête à ton nom")
+    @app_commands.rename(quest_label='label_quête', quest_comments='commentaires', helper_flag='assistance')
     @app_commands.describe(
-        quest_label="Libellé de quête", quest_comments="Commentaires optionnels"
+        quest_label="Libellé de quête", quest_comments="Commentaires optionnels", helper_flag="Se porter volontaire en tant qu'assistant/passeur"
     )
     async def ajout_quete(
         interaction: discord.Interaction,
         quest_label: str = None,
         quest_comments: str = "",
+        helper_flag: str = "False"
     ):
         """Command to add a quest to the billboard
 
@@ -126,6 +132,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             quest_label (str): Argument corresponding to the quest label
             If help label is passed, display the list of all possible labels and bosses
             quest_comments (str): Argument corresponding to the comments. Defaults to None
+            helper_flag (bool): Argument to determine if the quest added is as a helper. Defaults to False
         """
         # Define help labels
         help_labels = ["help", "aide", None]
@@ -135,6 +142,12 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         user_id = str(interaction.user.id)
         server_name = interaction.guild.name
         user_name = interaction.user.display_name
+        
+        # Convert helper flag
+        if(helper_flag=="True"):
+            helper_flag=True
+        else:
+            helper_flag=False
 
         if quest_label in help_labels:
             # Read list of all labels
@@ -182,6 +195,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                     "quest_category": quest_category,
                     "quest_label": quest_label,
                     "quest_comments": quest_comments,
+                    "helper_flag": helper_flag
                 }
 
                 await database_module.insert_quest(
@@ -193,16 +207,23 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                     quest_category=quest_category,
                     quest_label=quest_label,
                     quest_comments=quest_comments,
+                    helper_flag=helper_flag
                 )
 
                 quest_embed = embed_quest_list_from_member(
-                    interaction.user, [quest_dict]
+                    interaction.user, [quest_dict], hide_index=True
                 )
-
-                await interaction.response.send_message(
-                    content=f"Mercenaire {interaction.user.mention} a ajouté la quête suivante sur le comptoir de quêtes de la guilde :",
-                    embed=quest_embed,
-                )
+                
+                if helper_flag:
+                    await interaction.response.send_message(
+                        content=f":raised_hand: Mercenaire {interaction.user.mention} s'est porté volontaire comme assistant à la quête suivante :",
+                        embed=quest_embed,
+                    )
+                else:
+                    await interaction.response.send_message(
+                        content=f":bell: Mercenaire {interaction.user.mention} a ajouté la quête suivante sur le comptoir de quêtes de la guilde :",
+                        embed=quest_embed,
+                    )
 
                 # Mention members that have the same label
                 await mention_common_members(
@@ -253,13 +274,14 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             else:
                 await interaction.response.send_message(embed=embed)
         else:
+            msg = "Il n'y a aucune quête à ton nom sur le comptoir : utilise `/ajout_quete` pour en ajouter une!"
             if followup:
                 await interaction.followup.send(
-                    content="Il n'y a aucune quête à ton nom sur le comptoir : utilise `/ajout_quete` pour en ajouter une!"
+                    content=msg
                 )
             else:
                 await interaction.response.send_message(
-                    content="Il n'y a aucune quête à ton nom sur le comptoir : utilise `/ajout_quete` pour en ajouter une!"
+                    content=msg
                 )
 
     # Command to get all quests from the current server
@@ -267,6 +289,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         name="lire_toutes_quetes",
         description="Affiches l'ensemble des quêtes de tous les membres du serveur",
     )
+    @app_commands.rename(quest_label='label_quête')
     @app_commands.describe(quest_label="Libellé de quête")
     async def lire_toutes_quetes(
         interaction: discord.Interaction, quest_label: str = None
@@ -326,6 +349,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         name="supp_quete",
         description="Supprimes la quête indexé en argument de ta liste de quête",
     )
+    @app_commands.rename(idx="quete_supprimer")
     @app_commands.describe(idx="Index de la liste de quête")
     async def supp_quete(interaction: discord.Interaction, idx: int):
         """Function to remove a quest given it's displayed index (offset by 1)
@@ -401,6 +425,29 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             for choice in list_labels
             if current.lower() in f"{choice.get('key')} - {choice.get('name')}".lower()
         ][:25]
+        
+    @ajout_quete.autocomplete("helper_flag")
+    async def true_false_autocomplete(interaction: discord.Interaction, current: str):
+        """Autocomplete decorator function for true/false parameter
+
+        Args:
+            interaction (discord.Interaction): Discord interaction context
+            current (str): Current string being typed
+        """
+
+        bool_dict = {   
+                        "Oui": "True", 
+                        "Non": "False" 
+                    }
+
+        return [
+            app_commands.Choice(
+                name=choice,
+                value=bool_dict.get(choice),
+            )
+            for choice in bool_dict
+            if current.lower() in choice.lower()
+        ]
 
     @supp_quete.autocomplete("idx")
     async def quest_delete_idx_autocomplete(
@@ -435,5 +482,5 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 value=choice.get("index"),
             )
             for choice in list_labels_quests
-            if current.lower() in f"{choice.get('key')} - {choice.get('name')}".lower()
+            if current.lower() in f"{choice.get('name')}".lower()
         ][:25]
