@@ -74,13 +74,14 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
     # Check if the selected label belongs to the dict and send message to relevant members
     async def mention_common_members(
-        interaction: discord.Interaction, quest_label=None
+        interaction: discord.Interaction, quest_label=None, from_helper=False
     ):
         """Get the lists of members having the specified label quests in their list and mentions them in a message
 
         Args:
             ctx (commands.Context): discord context of the command
-            quest_label (_type_, optional): quest label to search for. Defaults to None.
+            quest_label (str, optional): quest label to search for. Defaults to None.
+            from_helper (bool, optional): tells if the trigger comes from an helper or not. Defaults to false 
         """
         server_id = str(interaction.guild.id)
 
@@ -105,10 +106,16 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             for member_id in list_members_id:
                 member = bot.get_guild(int(server_id)).get_member(int(member_id))
                 
-                if member_id in helper_members_id:
-                    message = f":sparkles: Mercenaire {member.mention} est un assistant qui peut t'aider à accomplir ta quête !"
+                if from_helper:
+                    # Message to send when the user is provinding assistance : only search for members who are not helpers
+                    if member_id not in helper_members_id:
+                        message = f":sos: Mercenaire {member.mention} cherches un assistant pour l'aider dans cette même quête"
                 else:
-                    message = f":dart: Mercenaire {member.mention} partage la même quête que toi et peut t'aider !"
+                    # Messages to send if the user asks for help through a quest
+                    if member_id in helper_members_id:
+                        message = f":sparkles: Mercenaire {member.mention} est un assistant qui peut t'aider à accomplir ta quête !"
+                    else:
+                        message = f":dart: Mercenaire {member.mention} partage la même quête que toi et peut t'aider !"
                 
                 await interaction.followup.send(content=message)
 
@@ -227,7 +234,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
                 # Mention members that have the same label
                 await mention_common_members(
-                    interaction=interaction, quest_label=quest_label
+                    interaction=interaction, quest_label=quest_label, from_helper=helper_flag
                 )
 
             else:
