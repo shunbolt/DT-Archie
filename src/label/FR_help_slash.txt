@@ -1,26 +1,26 @@
 Bienvenue au comptoir de guilde !
 
-:wave: Je suis la conseillère Archie et je suis présente pour aider les membres de la guilde à se coordonner pour la réalisation de leurs quêtes (quotidiennes ou autre).
+:wave: Je suis la conseillère Archie et je suis là pour aider les membres de la guilde à se coordonner pour la réalisation de leurs quêtes (quotidiennes ou autre).
 :question: Si tu ne sais pas ce qu'est une quête quotidienne, tu trouveras plus d'informations vers ce [lien](https://www.dofus-touch.com/fr/mmorpg/tutoriels/1637266-missions-journalieres).
 :keyboard: Pour m'utiliser, tu peux te servir des commandes suivantes :
 
-:speech_left:  `/aide` : Affiche cette page avec la liste des commandes disponibles.
+:speech_left:  `/aide` : affiche cette page avec la liste des commandes disponibles.
 
-:speech_left:  `/ajout_quete [label] [commentaires] [assistant]` : Ajoute une quête à ton nom au comptoir de guilde. 
+:speech_left:  `/ajout_quete [label] [commentaires] [assistant]` : ajoute une quête à ton nom au comptoir de guilde. 
     Par exemple :
         `/ajout_quete nidKwakwa full succès` 
     te permet d'ajouter une quête indiquant que tu souhaites faire un donjon Kwakwa en full succès !
-    :raised_hand: Si tu souhaites te porter volontaire en tant qu'assistant pour des quêtes, spécifies `Oui` dans l'argument `[assistant]` :
+    :raised_hand: Si tu souhaites te porter volontaire en tant qu'assistant pour des quêtes, spécifie `Oui` dans l'argument `[assistant]` :
         `/ajout_quete nidKwakwa full succès Oui`
     :arrow_forward: Tu peux avoir la liste complète des libellés avec la commande `/ajout_quete` sans libellé.
 
-:speech_left:  `/lire_quetes` : Affiches l'ensemble de tes quêtes sous forme d'indices.
+:speech_left:  `/lire_quetes` : affiche l'ensemble de tes quêtes sous forme d'indices.
 
-:speech_left:  `/lire_toutes_quetes [label]` : Affiche l'ensemble de quête publiée dans le comptoir membre par membre.
-    Tu peux aussi ajouter un libellé de quête pour filtrer sur les quêtes de ce libellé précis. 
+:speech_left:  `/lire_toutes_quetes [label]` : affiche l'ensemble des quêtes publiées dans le comptoir des membres.
+    Tu peux ajouter un libellé de quête pour filtrer sur les quêtes de ce libellé précis et mentionner les éventuels membres
 
-:speech_left:  `/supp_quete [index]` : Supprimes la quête indexé en argument de ta liste de quête.
+:speech_left:  `/supp_quete [index]` : Supprimes la quête de ta liste de quêtes.
 
 :mega: Lorsque des quêtes sont ajoutées, tu seras notifié des autres membres ayant les même que toi pour que vous puissiez les réaliser ensemble ! :clap: :gift: :tada:
-:briefcase: N'hésites donc pas à renseigner tes quêtes via mes commandes pour que je puisses te mettre en relation avec d'autres mercenaires et ainsi t'aider au mieux !
-:map: Bon courage dans ton aventure dans le monde des Douzes ! :nest_with_eggs:
+:briefcase: N'hésites donc pas à renseigner tes quêtes via mes commandes pour que je puisse te mettre en relation avec d'autres mercenaires et ainsi t'aider au mieux !
+:map: Bon courage dans ton aventure dans le monde des Douze ! :nest_with_eggs:
