@@ -3,6 +3,9 @@
 .env
 archie.egg-info
 
+# Img directory
+img
+
 # Log directory
 logs
 
