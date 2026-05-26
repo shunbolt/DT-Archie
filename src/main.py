@@ -24,6 +24,7 @@ def startup_bot():
     load_dotenv()
     token = os.getenv("DISCORD_TOKEN")
     server_admin_id = int(os.getenv("SERVER_ADMIN_ID"))
+    deploy_env = os.getenv("DEPLOY_ENV")
     channel_admin_id_database = int(os.getenv("CHANNEL_ADMIN_ID_DATABASE"))
     channel_admin_id_logs = int(os.getenv("CHANNEL_ADMIN_ID_LOGS"))
     channel_admin_id_cli = int(os.getenv("CHANNEL_ADMIN_ID_CLI"))
@@ -32,7 +33,10 @@ def startup_bot():
 
     # Build logger output from the bot
     log_directory = os.path.join(SCRIPT_PATH, "..", "logs")
-    log_filename = f"discord_{CURRENT_DATE}.log"
+    if deploy_env == "PROD":
+        log_filename = "discord_archie.log"
+    else:
+        log_filename = f"discord_archie_{CURRENT_DATE}.log"
     handler = logger_module.create_logger(
         path_logfile=log_directory, name_logfile=log_filename, mode="a"
     )
@@ -81,7 +85,13 @@ def startup_bot():
     )
 
     # Run the bot
-    bot.run(token, log_handler=handler, log_level=logging.DEBUG)
+    
+    if deploy_env in ["PROD", "BURN"]:
+        log_level = logging.INFO
+    else: 
+        log_level = logging.DEBUG
+    
+    bot.run(token, log_handler=handler, log_level=log_level)
 
 
 if __name__ == "__main__":
