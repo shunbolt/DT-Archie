@@ -17,6 +17,7 @@ The bot has been developped in Python and specifically with the discord.py libra
   - [Install](#install)
   - [Usage](#usage)
   - [Authors](#authors)
+  - [Support](#support)
   - [Data usage](#data-usage)
   - [License](#license)
 
@@ -44,6 +45,12 @@ Whenever you need help, use the `/aide` command to get the list of available com
 Made by Shunbolt 
 
 Discord ID : Shunbolt#1312
+
+## Support
+
+If you wish to tip me :
+
+<https://ko-fi.com/shunbolt>
 
 ## Data usage
 
