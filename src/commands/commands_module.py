@@ -56,6 +56,48 @@ def bot_commands_admin(
 
     @bot.command()
     @commands.check(check_admin_command)
+    async def get_database(ctx: commands.Context):
+        """Send the database to the database info channel
+
+        Args:
+            ctx (commands.Context): Discord context
+        """
+
+        # Look for admin guild
+        admin_guild = bot.get_guild(server_admin_id)
+        if admin_guild:
+            # Look for database channel and send data file
+            database_admin_channel = admin_guild.get_channel(channel_admin_id_database)
+            if database_admin_channel and isinstance(
+                database_admin_channel, discord.TextChannel
+            ):
+                await database_admin_channel.send(file=discord.File(database_filepath))
+        else:
+            print("Admin guild not found : please verify specified IDS in env")
+            
+    @bot.command()
+    @commands.check(check_admin_command)
+    async def get_logs(ctx: commands.Context):
+        """Send the logs to the logs info channel
+
+        Args:
+            ctx (commands.Context): Discord context
+        """
+
+        # Look for admin guild
+        admin_guild = bot.get_guild(server_admin_id)
+        if admin_guild:
+            # Look for database channel and send data file
+            logs_admin_channel = admin_guild.get_channel(channel_admin_id_logs)
+            if logs_admin_channel and isinstance(
+                logs_admin_channel, discord.TextChannel
+            ):
+                await logs_admin_channel.send(file=discord.File(log_filepath))
+        else:
+            print("Admin guild not found : please verify specified IDS in env")
+
+    @bot.command()
+    @commands.check(check_admin_command)
     async def delete_all(ctx: commands.Context):
         """Purge the whole database
 
