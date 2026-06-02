@@ -1,4 +1,5 @@
 import discord
+from discord.ui import Button, View
 import json
 from discord.ext import commands
 from pickledb import PickleDB
@@ -6,6 +7,7 @@ from pickledb import PickleDB
 from src.database import database_module
 
 MENTION_ROLE_NAME = "Archie"
+
 
 def bot_commands_admin(
     bot: commands.Bot,
@@ -56,6 +58,38 @@ def bot_commands_admin(
 
     @bot.command()
     @commands.check(check_admin_command)
+    async def shutdown(ctx: commands.Context):
+        """Command to shutdown the bot with a confirmation view with two buttons
+
+        Args:
+            ctx (commands.Context): Discord context
+        """
+        # Confirmation view
+        confirmationView = View(timeout=20)
+        
+        # Yes button
+        yes_button = Button(label="Yes", style=discord.ButtonStyle.danger)
+        async def yes_callback(interaction: discord.Interaction):
+            await interaction.response.send_message("Shutting down...", view=None)
+            await bot.close()  # Shutdown the bot
+            
+        # No Button
+        no_button = Button(label="No", style=discord.ButtonStyle.secondary)
+        async def no_callback(interaction: discord.Interaction):
+            await interaction.response.edit_message(content="Shutdown aborted.", view=None)
+            
+        # Assign callbacks to buttons
+        yes_button.callback = yes_callback
+        no_button.callback = no_callback
+
+        # Add buttons to the view
+        confirmationView.add_item(yes_button)
+        confirmationView.add_item(no_button)
+
+        await ctx.send("Are you sure you want to shutdown Archie?", view=confirmationView)
+
+    @bot.command()
+    @commands.check(check_admin_command)
     async def get_database(ctx: commands.Context):
         """Send the database to the database info channel
 
@@ -98,7 +132,7 @@ def bot_commands_admin(
 
     @bot.command()
     @commands.check(check_admin_command)
-    async def delete_all(ctx: commands.Context):
+    async def delete_database(ctx: commands.Context):
         """Purge the whole database
 
         Args:
