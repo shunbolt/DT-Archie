@@ -1,3 +1,34 @@
+## 0.6.0 (2026-06-02)
+
+### Feat
+
+- **commands**: added command shutdown
+- **label**: updated tag and dungeons label
+- **label**: updated help label
+- **commands**: added admin command to retrieve src
+- **commands**: changed message when common members with helpers
+- **src**: helper commands
+- **commands**: admin command to restore database
+- **commands**: admin command to restore database
+- **src**: added admin only commands to handle database
+- **events**: added tasks to retrieve log & data to admin server
+
+### Fix
+
+- **commands**: removed role to mention common members
+- **label**: added 'e' to 'Avancée' tag
+- **label**: added 'e' to 'Avancée' tag
+
+### Refactor
+
+- **README**: added Kofi link
+- **label**: removed deprecated label text
+- **img**: added banner img
+
+### Perf
+
+- **img**: removed img
+
 ## 0.5.0 (2026-05-23)
 
 ### Refactor
