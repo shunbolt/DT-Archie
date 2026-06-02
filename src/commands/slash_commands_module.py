@@ -30,7 +30,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         """
         # Build embed with the quests information
         embed = discord.Embed(
-            title=f"Quêtes de {member.display_name} sur le comptoir de quêtes de la guilde :"
+            title=f"Quêtes de {member.display_name} sur le comptoir de la guilde :"
         )
         embed.set_thumbnail(url=member.avatar.url)
 
@@ -39,7 +39,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             if hide_index:
                 quest_index = ""
             else:
-                quest_index = f"#{index + 1}"
+                quest_index = f"`#{index + 1}`"
                 
             # Get helper value
             quest_helper_flag = quest.get("helper_flag")
@@ -62,11 +62,11 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             quest_tag_name = label_module.read_tag(quest_tag)["name"]
             quest_tag_emoji = label_module.read_tag(quest_tag)["discord_emoji"]
 
-            embed_name = f"{quest_category_emoji} {quest_prefix} {quest_category_name} {quest_tag_name} {quest_index}"
+            embed_name = f"{quest_category_emoji} {quest_prefix} {quest_category_name} {quest_tag_name} {quest_tag_emoji} {quest_index}"
 
             embed.add_field(
                 name=embed_name,
-                value=f""":label: Nom : {quest_label} {quest_tag_emoji}\n:pencil: Commentaires : {quest_comments}""",
+                value=f""":label: Nom : {quest_label}\n:pencil: Commentaires : {quest_comments}""",
                 inline=False,
             )
 
