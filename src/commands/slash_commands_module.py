@@ -176,7 +176,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 ]
 
                 # Build description and embed from it
-                description = "\n\n".join(list_label_to_display)
+                description = f":arrow_double_down: **Quêtes {label_module.read_tag(current_tag)['name']}**\n\n" + "\n\n".join(list_label_to_display)
 
                 # display title on the first embed sent
                 if first_embed:
