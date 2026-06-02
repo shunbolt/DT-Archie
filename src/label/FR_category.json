@@ -4,7 +4,7 @@
         "discord_emoji" : ":crossed_swords:"
     },
     "battle" : {
-        "name": "Combat de groupe" ,
+        "name": "Combat" ,
         "discord_emoji" : ":people_holding_hands:" 
     },
     "ascension" : {

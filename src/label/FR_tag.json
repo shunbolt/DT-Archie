@@ -1,22 +1,26 @@
 {
+    "very_easy" : {
+        "name": "Niv. 1-50" ,
+        "discord_emoji" : ":lotus:"
+    },
     "easy" : {
-        "name": "Novice" ,
+        "name": "Niv. 51-100" ,
         "discord_emoji" : ":green_book:"
     },
     "medium" : {
-        "name": "Intermédiaire" ,
+        "name": "Niv. 101-150" ,
         "discord_emoji" : ":orange_book:" 
     },
     "hard" : {
-        "name": "Avancée" ,
+        "name": "Niv. 151-180" ,
         "discord_emoji" :":closed_book:" 
     },
     "very_hard" : {
-        "name": "Difficile" ,
+        "name": "Niv. 181-200" ,
         "discord_emoji" :":skull:" 
     },
     "group" : {
-        "name": "Groupe" ,
+        "name": "en groupe" ,
         "discord_emoji" :":handshake:" 
     }
 }

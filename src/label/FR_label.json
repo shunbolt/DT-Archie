@@ -1,67 +1,62 @@
 {
-    "chateauDeBelladone": {
-        "name": "Belladone",
-        "tag": "easy",
-        "category": "dungeon"
-    },
     "donjonDesChamps": {
         "name": "Tournesol Affamé",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "donjonEnsable": {
         "name": "Mob l'Éponge",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "donjonScarafeuilles": {
         "name": "Scarabosse Doré",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "donjonTofus": {
         "name": "Batofu",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "maisonFantome": {
         "name": "Boostache",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "donjonSquelettes": {
         "name": "Chafer Rônin",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "donjonBouftous": {
         "name": "Bouftou Royal",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "donjonBworks": {
         "name": "Bworkette",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "donjonForgerons": {
         "name": "Coffre des Forgerons",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "donjonLarves": {
         "name": "Shin Larve",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "grotteHesque": {
         "name": "Corailleur Magistral",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "nidKwakwa": {
         "name": "Kwakwa",
-        "tag": "easy",
+        "tag": "very_easy",
         "category": "dungeon"
     },
     "chateauWaWabbit": {
@@ -116,37 +111,37 @@
     },
     "terrierDuWaWabbit": {
         "name": "Wa Wobot",
-        "tag": "medium",
+        "tag": "easy",
         "category": "dungeon"
     },
     "donjonAbraknydes": {
         "name": "Abraknyde Ancestral",
-        "tag": "medium",
+        "tag": "easy",
         "category": "dungeon"
     },
     "barrageDureTete": {
         "name": "Colonimb Selim Quartz",
-        "tag": "medium",
+        "tag": "easy",
         "category": "dungeon"
     },
     "antreDragonCochon": {
         "name": "Dragon Cochon",
-        "tag": "medium",
+        "tag": "easy",
         "category": "dungeon"
     },
     "caverneKoulosse": {
         "name": "Koulosse",
-        "tag": "medium",
+        "tag": "easy",
         "category": "dungeon"
     },
     "donjonMoon": {
         "name": "Moon",
-        "tag": "medium",
+        "tag": "easy",
         "category": "dungeon"
     },
     "donjonCanides": {
         "name": "Meulou",
-        "tag": "medium",
+        "tag": "easy",
         "category": "dungeon"
     },
     "gouletRasboul": {
@@ -291,7 +286,7 @@
     },
     "donjonFungus": {
         "name": "Ougah",
-        "tag": "hard",
+        "tag": "very_hard",
         "category": "dungeon"
     },
     "atelierTanukouiSan": {
@@ -301,7 +296,7 @@
     },
     "cavernesKolosso": {
         "name": "Kolosso",
-        "tag": "hard",
+        "tag": "very_hard",
         "category": "dungeon"
     },
     "fabriqueFouxArtifice": {
