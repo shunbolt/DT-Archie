@@ -50,7 +50,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
             # Adjust quest_prefix based on helper flag value
             if quest_helper_flag:
-                quest_prefix = ":star2: :star2: :star2: passeur de quête"
+                quest_prefix = ":star2: :star2: :star2: Passeur de quête"
             else:
                 quest_prefix = "Quête"
 
