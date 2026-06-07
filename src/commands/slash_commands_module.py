@@ -1,3 +1,5 @@
+import os
+
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -6,6 +8,8 @@ from pickledb import PickleDB
 from src.database import database_module
 from src.label import label_module
 
+
+SCRIPT_PATH = os.path.dirname(__file__)
 
 def bot_commands(bot: commands.Bot, database: PickleDB):
     """
@@ -46,7 +50,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
             # Adjust quest_prefix based on helper flag value
             if quest_helper_flag:
-                quest_prefix = ":star2: :star2: :star2: Assistant de quête"
+                quest_prefix = ":star2: :star2: :star2: passeur de quête"
             else:
                 quest_prefix = "Quête"
 
@@ -56,6 +60,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             quest_category_emoji = quest_category["discord_emoji"]
             quest_label = label_module.read_label(quest["quest_label"])["name"]
             quest_comments = quest["quest_comments"]
+            quest_datetime = quest.get("quest_datetime")
 
             # Add emoji based on difficulty tag : implement on a dict directly
             quest_tag = label_module.read_label(quest["quest_label"])["tag"]
@@ -66,7 +71,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
             embed.add_field(
                 name=embed_name,
-                value=f""":label: Nom : {quest_label}\n:pencil: Commentaires : {quest_comments}""",
+                value=f""":label: Nom : {quest_label}\n:pencil: Commentaires : {quest_comments}\n:date: Publiée le : {quest_datetime}""",
                 inline=False,
             )
 
@@ -109,11 +114,11 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 if from_helper:
                     # Message to send when the user is provinding assistance : only search for members who are not helpers
                     if member_id not in helper_members_id:
-                        message = f":sos: Mercenaire {member.mention} cherches un assistant pour l'aider dans cette même quête"
+                        message = f":sos: Mercenaire {member.mention} cherches un passeur pour l'aider dans cette même quête"
                 else:
                     # Messages to send if the user asks for help through a quest
                     if member_id in helper_members_id:
-                        message = f":sparkles: Mercenaire {member.mention} est un assistant qui peut t'aider à accomplir ta quête !"
+                        message = f":sparkles: Mercenaire {member.mention} est un passeur qui peut t'aider à accomplir ta quête !"
                     else:
                         message = f":dart: Mercenaire {member.mention} partage la même quête que toi et peut t'aider !"
                 
@@ -124,7 +129,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
     @bot.tree.command(name="ajout_quete", description="Ajoute une quête à ton nom")
     @app_commands.rename(quest_label='label_quête', quest_comments='commentaires', helper_flag='assistance')
     @app_commands.describe(
-        quest_label="Libellé de quête", quest_comments="Commentaires optionnels", helper_flag="Se porter volontaire en tant qu'assistant/passeur"
+        quest_label="Libellé de quête", quest_comments="Commentaires optionnels", helper_flag="Se porter volontaire en tant que passeur"
     )
     async def ajout_quete(
         interaction: discord.Interaction,
@@ -180,7 +185,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
                 # display title on the first embed sent
                 if first_embed:
-                    title = "Labels possible pour la commande `!ajout_quete <label>`"
+                    title = "Labels possible pour la commande `/ajout_quete <label>`"
                     first_embed = False
                 else:
                     title = None
@@ -192,6 +197,9 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         else:
             # Read category based on label name
             label_dict = label_module.read_label(quest_label)
+            
+            # Get the current datetime of the message to insert in the quest metadata
+            quest_datetime = interaction.created_at.strftime('%Y-%m-%d %H:%M:%S')
 
             if label_dict is not None:
                 quest_category = label_dict["category"]
@@ -202,7 +210,8 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                     "quest_category": quest_category,
                     "quest_label": quest_label,
                     "quest_comments": quest_comments,
-                    "helper_flag": helper_flag
+                    "helper_flag": helper_flag,
+                    "quest_datetime" : quest_datetime
                 }
 
                 await database_module.insert_quest(
@@ -214,7 +223,8 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                     quest_category=quest_category,
                     quest_label=quest_label,
                     quest_comments=quest_comments,
-                    helper_flag=helper_flag
+                    helper_flag=helper_flag,
+                    quest_datetime=quest_datetime,
                 )
 
                 quest_embed = embed_quest_list_from_member(
@@ -223,7 +233,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 
                 if helper_flag:
                     await interaction.response.send_message(
-                        content=f":raised_hand: Mercenaire {interaction.user.mention} s'est porté volontaire comme assistant à la quête suivante :",
+                        content=f":raised_hand: Mercenaire {interaction.user.mention} s'est porté volontaire comme passeur à la quête suivante :",
                         embed=quest_embed,
                     )
                 else:
@@ -391,20 +401,59 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 "Numéro d'index inconnu on non reconnu : veuillez réessayer"
             )
 
-    # Comment to get help
+    # Command to get help
     @bot.tree.command(
-        name="aide", description="Fonction pour afficher le guide d'utilisation"
+        name="aide", description="Commande pour afficher le guide d'utilisation du bot"
     )
     async def aide(interaction: discord.Interaction):
         """Function to display the help text
 
         Args:
-            ctx (commands.Context): discord context of the command
+            interaction (discord.Interaction): discord context of the command
         """
 
         await interaction.response.send_message(
             content=label_module.read_help(help_type="/")
         )
+        
+    # Command to get help through gifs
+    @bot.tree.command(
+        name="aide_gifs", description="Commande pour afficher via des gifs l'utilisation du bot"
+    )
+    async def aide_gifs(interaction: discord.Interaction):
+        """Function to display help with gifs
+
+        Args:
+            interaction (discord.Interaction): discord context of the command
+        """
+        # HACK : Put paths into dedicated file
+        PATH_GIF_ADD_QUEST = os.path.join(SCRIPT_PATH, "../..", "static", "gifs", "archie_add_quest.gif")
+        PATH_GIF_ADD_ASSIST = os.path.join(SCRIPT_PATH, "../..", "static", "gifs", "archie_add_assist.gif")
+        PATH_GIF_REMOVE_QUEST = os.path.join(SCRIPT_PATH, "../..", "static", "gifs", "archie_remove_quest.gif")
+
+        dict_gifs = {
+            "add_quest" : 
+                { 
+                 "path" : PATH_GIF_ADD_QUEST,
+                 "msg" : "Comment ajouter une quête dans le comptoir de guilde :"
+                },
+            "add_assist" :
+                { 
+                 "path" : PATH_GIF_ADD_ASSIST,
+                 "msg" : "Comment devenir passeur pour un donjon + mention auprès d'un membre :"
+                },
+            "remove_quest" : 
+                { 
+                 "path" : PATH_GIF_REMOVE_QUEST,
+                 "msg" : "Comment lire sa liste de quêtes et supprimer une quête spécifique (e.g : après l'avoir terminé ou reroll)"
+                }
+        }
+
+        await interaction.response.send_message(content="Instructions vidéos ci-dessous :")
+        for dict_content in dict_gifs.values():
+            with open (dict_content["path"], 'rb') as gif_file :
+                # Send gif message
+                await interaction.followup.send(content=dict_content["msg"], file=discord.File(gif_file))
 
     # Autocomplete logic
 

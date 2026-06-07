@@ -21,8 +21,8 @@ def startup_bot():
     """
 
     # Load env variables
-    load_dotenv()
-    token = os.getenv("DISCORD_TOKEN")
+    load_dotenv()    
+    
     server_admin_id = int(os.getenv("SERVER_ADMIN_ID"))
     deploy_env = os.getenv("DEPLOY_ENV")
     channel_admin_id_database = int(os.getenv("CHANNEL_ADMIN_ID_DATABASE"))
@@ -30,6 +30,13 @@ def startup_bot():
     channel_admin_id_cli = int(os.getenv("CHANNEL_ADMIN_ID_CLI"))
     channel_admin_id_restore_database = int(os.getenv("CHANNEL_ADMIN_ID_RESTORE_DATABASE"))
     user_admin_id = int(os.getenv("USER_ADMIN_ID"))
+
+    # Use appropriate token based on deploy_env
+    if deploy_env == "DEV":
+        token = os.getenv("DISCORD_TOKEN_DEV")
+    else:
+        token = os.getenv("DISCORD_TOKEN")
+    
 
     # Build logger output from the bot
     log_directory = os.path.join(SCRIPT_PATH, "..", "logs")

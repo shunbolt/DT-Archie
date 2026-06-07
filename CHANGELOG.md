@@ -1,3 +1,16 @@
+## 0.7.0 (2026-06-07)
+
+### Feat
+
+- **src**: added datetime of quests
+- **commands**: added aide_gifs command
+
+### Refactor
+
+- **label**: added combat battles + changed emoji to combat category
+- **commands**: renamed assistant to passeur
+- **static**: added instructions gifs
+
 ## 0.6.0 (2026-06-02)
 
 ### Feat

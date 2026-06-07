@@ -101,6 +101,7 @@ async def insert_quest(
     quest_category="dungeon",
     quest_label="",
     quest_comments="",
+    quest_datetime="",
     helper_flag=False
 ):
     """Function to insert a quest in the given database
@@ -114,6 +115,8 @@ async def insert_quest(
         quest_category (str, optional): Category of quest among set values. Defaults to "dungeon".
         quest_label (str, optional): Label of quest. Defaults to "".
         quest_comments (str, optional): User defined comment. Defaults to "".
+        quest_datetime (str, optional): datetime of when the quest has been added.
+        helper_flag (bool, optional): Flag to determine if the quest is from an helper.
     """
 
     await database.load()
@@ -124,6 +127,7 @@ async def insert_quest(
         "quest_category": quest_category,
         "quest_label": quest_label,
         "quest_comments": quest_comments,
+        "quest_datetime": quest_datetime,
         "helper_flag": helper_flag
     }
 

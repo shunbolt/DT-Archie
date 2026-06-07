@@ -1,0 +1,3 @@
+nohup uv run dt_archie > logs/process.log 2>&1 &
+disown -h %1
+ps aux | grep dt_archie

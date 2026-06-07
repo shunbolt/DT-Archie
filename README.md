@@ -16,6 +16,9 @@ The bot has been developped in Python and specifically with the discord.py libra
   - [Table of contents](#table-of-contents)
   - [Install](#install)
   - [Usage](#usage)
+    - [Add a quest](#add-a-quest)
+    - [Mention a member as an assistant](#mention-a-member-as-an-assistant)
+    - [Delete a quest from our own list](#delete-a-quest-from-our-own-list)
   - [Authors](#authors)
   - [Support](#support)
   - [Data usage](#data-usage)
@@ -33,16 +36,29 @@ Link to the Archie bot install
 You can use the main commands :
 
 ```sh
-/ajout_quete [quest_label] [quest_comments] // Add a quest to the user billboard with the corresponding label / comments
+/ajout_quete [quest_label] [quest_comments] [assist] // Add a quest to the user billboard with the corresponding label / comments and optionally as an assistant
 /lire_quetes // Display the list of quests of the user
 /lire_toutes_quetes // Display the list of all published quests
 /supp_quete [index] // Delete a quest from the list of user quest given it's index on the billboard
 ```
 Whenever you need help, use the `/aide` command to get the list of available commands.
 
+### Add a quest 
+
+![How to add a quest](static/gifs/archie_add_quest.gif)
+
+### Mention a member as an assistant
+
+![How to mention](static/gifs/archie_add_assist.gif)
+
+### Delete a quest from our own list
+
+![How to delete a quest](static/gifs/archie_remove_assist.gif)
+
 ## Authors
 
 Made by Shunbolt 
+
 
 Discord ID : Shunbolt#1312
 

@@ -5,7 +5,7 @@
     },
     "battle" : {
         "name": "Combat" ,
-        "discord_emoji" : ":people_holding_hands:" 
+        "discord_emoji" : ":boxing_glove:" 
     },
     "ascension" : {
         "name": "Ascension" ,
