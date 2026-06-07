@@ -50,7 +50,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
             # Adjust quest_prefix based on helper flag value
             if quest_helper_flag:
-                quest_prefix = ":star2: :star2: :star2: Assistant de quête"
+                quest_prefix = ":star2: :star2: :star2: passeur de quête"
             else:
                 quest_prefix = "Quête"
 
@@ -113,11 +113,11 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 if from_helper:
                     # Message to send when the user is provinding assistance : only search for members who are not helpers
                     if member_id not in helper_members_id:
-                        message = f":sos: Mercenaire {member.mention} cherches un assistant pour l'aider dans cette même quête"
+                        message = f":sos: Mercenaire {member.mention} cherches un passeur pour l'aider dans cette même quête"
                 else:
                     # Messages to send if the user asks for help through a quest
                     if member_id in helper_members_id:
-                        message = f":sparkles: Mercenaire {member.mention} est un assistant qui peut t'aider à accomplir ta quête !"
+                        message = f":sparkles: Mercenaire {member.mention} est un passeur qui peut t'aider à accomplir ta quête !"
                     else:
                         message = f":dart: Mercenaire {member.mention} partage la même quête que toi et peut t'aider !"
                 
@@ -128,7 +128,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
     @bot.tree.command(name="ajout_quete", description="Ajoute une quête à ton nom")
     @app_commands.rename(quest_label='label_quête', quest_comments='commentaires', helper_flag='assistance')
     @app_commands.describe(
-        quest_label="Libellé de quête", quest_comments="Commentaires optionnels", helper_flag="Se porter volontaire en tant qu'assistant/passeur"
+        quest_label="Libellé de quête", quest_comments="Commentaires optionnels", helper_flag="Se porter volontaire en tant que passeur"
     )
     async def ajout_quete(
         interaction: discord.Interaction,
@@ -227,7 +227,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 
                 if helper_flag:
                     await interaction.response.send_message(
-                        content=f":raised_hand: Mercenaire {interaction.user.mention} s'est porté volontaire comme assistant à la quête suivante :",
+                        content=f":raised_hand: Mercenaire {interaction.user.mention} s'est porté volontaire comme passeur à la quête suivante :",
                         embed=quest_embed,
                     )
                 else:
