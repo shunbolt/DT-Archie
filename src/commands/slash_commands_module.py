@@ -1,3 +1,5 @@
+import os
+
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -6,6 +8,8 @@ from pickledb import PickleDB
 from src.database import database_module
 from src.label import label_module
 
+
+SCRIPT_PATH = os.path.dirname(__file__)
 
 def bot_commands(bot: commands.Bot, database: PickleDB):
     """
@@ -180,7 +184,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
                 # display title on the first embed sent
                 if first_embed:
-                    title = "Labels possible pour la commande `!ajout_quete <label>`"
+                    title = "Labels possible pour la commande `/ajout_quete <label>`"
                     first_embed = False
                 else:
                     title = None
@@ -391,20 +395,59 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 "Numéro d'index inconnu on non reconnu : veuillez réessayer"
             )
 
-    # Comment to get help
+    # Command to get help
     @bot.tree.command(
-        name="aide", description="Fonction pour afficher le guide d'utilisation"
+        name="aide", description="Commande pour afficher le guide d'utilisation du bot"
     )
     async def aide(interaction: discord.Interaction):
         """Function to display the help text
 
         Args:
-            ctx (commands.Context): discord context of the command
+            interaction (discord.Interaction): discord context of the command
         """
 
         await interaction.response.send_message(
             content=label_module.read_help(help_type="/")
         )
+        
+    # Command to get help through gifs
+    @bot.tree.command(
+        name="aide_gifs", description="Commande pour afficher via des gifs l'utilisation du bot"
+    )
+    async def aide_gifs(interaction: discord.Interaction):
+        """Function to display help with gifs
+
+        Args:
+            interaction (discord.Interaction): discord context of the command
+        """
+        # HACK : Put paths into dedicated file
+        PATH_GIF_ADD_QUEST = os.path.join(SCRIPT_PATH, "../..", "static", "gifs", "archie_add_quest.gif")
+        PATH_GIF_ADD_ASSIST = os.path.join(SCRIPT_PATH, "../..", "static", "gifs", "archie_add_assist.gif")
+        PATH_GIF_REMOVE_QUEST = os.path.join(SCRIPT_PATH, "../..", "static", "gifs", "archie_remove_quest.gif")
+
+        dict_gifs = {
+            "add_quest" : 
+                { 
+                 "path" : PATH_GIF_ADD_QUEST,
+                 "msg" : "Comment ajouter une quête dans le comptoir de guilde :"
+                },
+            "add_assist" :
+                { 
+                 "path" : PATH_GIF_ADD_ASSIST,
+                 "msg" : "Comment devenir passeur pour un donjon + mention auprès d'un membre :"
+                },
+            "remove_quest" : 
+                { 
+                 "path" : PATH_GIF_REMOVE_QUEST,
+                 "msg" : "Comment lire sa liste de quêtes et supprimer une quête spécifique (e.g : après l'avoir terminé ou reroll)"
+                }
+        }
+
+        await interaction.response.send_message(content="Instructions vidéos ci-dessous :")
+        for dict_content in dict_gifs.values():
+            with open (dict_content["path"], 'rb') as gif_file :
+                # Send gif message
+                await interaction.followup.send(content=dict_content["msg"], file=discord.File(gif_file))
 
     # Autocomplete logic
 
