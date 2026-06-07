@@ -60,6 +60,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             quest_category_emoji = quest_category["discord_emoji"]
             quest_label = label_module.read_label(quest["quest_label"])["name"]
             quest_comments = quest["quest_comments"]
+            quest_datetime = quest.get("quest_datetime")
 
             # Add emoji based on difficulty tag : implement on a dict directly
             quest_tag = label_module.read_label(quest["quest_label"])["tag"]
@@ -70,7 +71,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
 
             embed.add_field(
                 name=embed_name,
-                value=f""":label: Nom : {quest_label}\n:pencil: Commentaires : {quest_comments}""",
+                value=f""":label: Nom : {quest_label}\n:pencil: Commentaires : {quest_comments}\n:date: Publiée le : {quest_datetime}""",
                 inline=False,
             )
 
@@ -196,6 +197,9 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         else:
             # Read category based on label name
             label_dict = label_module.read_label(quest_label)
+            
+            # Get the current datetime of the message to insert in the quest metadata
+            quest_datetime = interaction.created_at.strftime('%Y-%m-%d %H:%M:%S')
 
             if label_dict is not None:
                 quest_category = label_dict["category"]
@@ -206,7 +210,8 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                     "quest_category": quest_category,
                     "quest_label": quest_label,
                     "quest_comments": quest_comments,
-                    "helper_flag": helper_flag
+                    "helper_flag": helper_flag,
+                    "quest_datetime" : quest_datetime
                 }
 
                 await database_module.insert_quest(
@@ -218,7 +223,8 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                     quest_category=quest_category,
                     quest_label=quest_label,
                     quest_comments=quest_comments,
-                    helper_flag=helper_flag
+                    helper_flag=helper_flag,
+                    quest_datetime=quest_datetime,
                 )
 
                 quest_embed = embed_quest_list_from_member(
