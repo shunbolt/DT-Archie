@@ -433,5 +433,30 @@
         "name" : "Faire 3 paliers d'ascension",
         "tag" : "group",
         "category": "ascension"
+    },
+    "combatlvl50" : {
+        "name" : "Faire des combats contre 3 monstres (Lvl 1-50)",
+        "tag" : "very_easy",
+        "category": "battle"
+    },
+    "combatlvl100" : {
+        "name" : "Faire des combats contre 3 monstres (Lvl 51-100)",
+        "tag" : "easy",
+        "category": "battle"
+    },
+    "combatlvl150" : {
+        "name" : "Faire des combats contre 3 monstres (Lvl 101-150)",
+        "tag" : "medium",
+        "category": "battle"
+    },
+    "combatlvl180" : {
+        "name" : "Faire des combats contre 3 monstres (Lvl 151-180)",
+        "tag" : "hard",
+        "category": "battle"
+    },
+    "combatlvl200" : {
+        "name" : "Faire des combats contre 3 monstres (Lvl 181-200)",
+        "tag" : "very_hard",
+        "category": "battle"
     }
 }
