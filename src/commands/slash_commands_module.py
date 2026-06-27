@@ -257,19 +257,30 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         name="lire_quetes",
         description="Affiches l'ensemble de tes quêtes ordonnée par indices",
     )
-    async def lire_quetes(interaction: discord.Interaction):
+    @app_commands.rename(ephemeral='privée')
+    @app_commands.describe(ephemeral="Afficher la réponse en privée dans le canal")
+    async def lire_quetes(interaction: discord.Interaction, ephemeral : str = "False"):
         """Function to read quests. Nest the logic
 
         Args:
             interaction (discord.Interaction): Discord interaction context
+            ephemeral (bool): Argument to determine if response should be ephemeral or not
         """
-        await lire_quetes_logic(interaction=interaction)
+        
+        # Convert ephemeral flag
+        if(ephemeral=="True"):
+            ephemeral=True
+        else:
+            ephemeral=False
+        
+        await lire_quetes_logic(interaction=interaction, ephemeral=ephemeral, followup=False)
 
-    async def lire_quetes_logic(interaction: discord.Interaction, followup=False):
+    async def lire_quetes_logic(interaction: discord.Interaction, ephemeral=False, followup=False):
         """Logic computation to read quests from the user on the quest billboard
 
         Args:
             interaction (discord.Interaction): Discord interaction context
+            ephemeral (bool) : Boolean to determine if message should be ephemeral 
             followup (bool) : Boolean to determine if the logic is called as followup or not
         """
         # Get credentials from the discord context
@@ -287,18 +298,20 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             )
 
             if followup:
-                await interaction.followup.send(embed=embed)
+                await interaction.followup.send(embed=embed, ephemeral=ephemeral)
             else:
-                await interaction.response.send_message(embed=embed)
+                await interaction.response.send_message(embed=embed, ephemeral=ephemeral)
         else:
             msg = "Il n'y a aucune quête à ton nom sur le comptoir : utilise `/ajout_quete` pour en ajouter une!"
             if followup:
                 await interaction.followup.send(
-                    content=msg
+                    content=msg,
+                    ephemeral=ephemeral
                 )
             else:
                 await interaction.response.send_message(
-                    content=msg
+                    content=msg,
+                    ephemeral=ephemeral
                 )
 
     # Command to get all quests from the current server
@@ -306,19 +319,26 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         name="lire_toutes_quetes",
         description="Affiches l'ensemble des quêtes de tous les membres du serveur",
     )
-    @app_commands.rename(quest_label='label_quête')
-    @app_commands.describe(quest_label="Libellé de quête")
+    @app_commands.rename(quest_label='label_quête', ephemeral='privée')
+    @app_commands.describe(quest_label="Libellé de quête", ephemeral="Afficher la réponse en privée dans le canal")
     async def lire_toutes_quetes(
-        interaction: discord.Interaction, quest_label: str = None
+        interaction: discord.Interaction, quest_label: str = None, ephemeral : str = "False",
     ):
         """Function to read all quests from the server
 
         Args:
             interaction (discord.Interaction): Discord interaction context
             quest_label (str): first optional argument corresponding to the label to filter
+            ephemeral (bool): Argument to determine if response should be ephemeral or not
         """
         # Get credentials from the discord context
         server_id = str(interaction.guild.id)
+        
+        # Convert ephemeral flag
+        if(ephemeral=="True"):
+            ephemeral=True
+        else:
+            ephemeral=False
 
         dict_users_quests = await database_module.get_quests_from_server(
             database=database, server_id=server_id, filter_label=quest_label
@@ -335,7 +355,8 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             )
 
             await interaction.response.send_message(
-                content=f"La liste des membres ayant renseigné une quête sur le comptoir est la suivante : {list_user_name}"
+                content=f"La liste des membres ayant renseigné une quête sur le comptoir est la suivante : {list_user_name}",
+                ephemeral=ephemeral
             )
 
             # Build embed for each user with their quests
@@ -344,11 +365,12 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                     bot.get_guild(int(server_id)).get_member(int(user_id)), quest_list
                 )
 
-                await interaction.followup.send(embed=embed)
+                await interaction.followup.send(embed=embed, ephemeral=ephemeral)
 
-            await mention_common_members(
-                interaction=interaction, quest_label=quest_label
-            )
+            if not ephemeral:
+                await mention_common_members(
+                    interaction=interaction, quest_label=quest_label
+                )
         else:
             if quest_label:
                 # Message if there is no quest for the selected label
@@ -391,7 +413,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
                 await interaction.response.send_message(
                     f"La quête de {interaction.user.display_name} - {label_module.read_label(quest_label_removed)['name']} numérotée #{idx} a été correctement supprimée"
                 )
-                await lire_quetes_logic(interaction=interaction, followup=True)
+                await lire_quetes_logic(interaction=interaction, ephemeral=True, followup=True)
             else:
                 await interaction.response.send_message(
                     f"La quête de {interaction.user.display_name} numérotée {idx} n'est pas trouvable"
@@ -483,6 +505,8 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
         ][:25]
         
     @ajout_quete.autocomplete("helper_flag")
+    @lire_quetes.autocomplete("ephemeral")
+    @lire_toutes_quetes.autocomplete("ephemeral")
     async def true_false_autocomplete(interaction: discord.Interaction, current: str):
         """Autocomplete decorator function for true/false parameter
 
