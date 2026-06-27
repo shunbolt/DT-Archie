@@ -1,4 +1,5 @@
 import os
+from zoneinfo import ZoneInfo
 
 import discord
 from discord import app_commands
@@ -199,7 +200,7 @@ def bot_commands(bot: commands.Bot, database: PickleDB):
             label_dict = label_module.read_label(quest_label)
             
             # Get the current datetime of the message to insert in the quest metadata
-            quest_datetime = interaction.created_at.strftime('%Y-%m-%d %H:%M:%S')
+            quest_datetime = interaction.created_at.astimezone(ZoneInfo("Europe/Paris")).strftime('%Y-%m-%d %H:%M:%S')
 
             if label_dict is not None:
                 quest_category = label_dict["category"]
